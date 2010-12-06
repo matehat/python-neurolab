@@ -1,1 +1,4 @@
 *.pyc
+.dropbox
+Icon*
+.DS_Store
