@@ -35,30 +35,3 @@ def to_hdf5(tank, dest=None, blocks=None, groups=(), channels=()):
         
         block.close()
     h5.close()
-
-
-if __name__ == '__main__':    
-    import argparse, sys
-    
-    parser = argparse.ArgumentParser(prog='python access.py', usage='%(prog)s path [options]')
-    parser.add_argument('path', help="Path to the TDT Tank", nargs="+")
-    parser.add_argument('--dest', nargs='*', help="Path to the destination file")
-    parser.add_argument('-b', '--block', nargs='*',
-        help="Name of the block from which to extract data"
-             " (use --describe to see a list of them).")
-    parser.add_argument('-c', '--channels', nargs="*",
-        help="Name of the channels to include in the extraction. "
-             "(use --describe to see a list of them)")
-    parser.add_argument('-g', '--groups', nargs="*",
-        help="Name of the channel groups to include in the extraction. "
-             "(use --describe to see a list of them)")
-    
-    options = parser.parse_args(sys.argv[1:])
-    if options.block is not None:
-        for i in range(len(options.block)):
-            options.block[i] = options.block[i].replace('_', '-')
-    
-    if options.dest is not None:
-        options.dest = " ".join(options.dest)
-    
-    to_hdf5(" ".join(options.path), options.dest, options.block, options.groups, options.channels)

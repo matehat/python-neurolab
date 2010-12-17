@@ -7,8 +7,6 @@ try:
 except ImportError:
     from ordereddict import OrderedDict
 
-# Requires Python 2.6
-
 import numpy
 from numpy.core.records import fromfile, fromarrays
 
