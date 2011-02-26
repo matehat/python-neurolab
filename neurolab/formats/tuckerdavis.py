@@ -2,13 +2,52 @@ import struct, sys, time, os
 from datetime import datetime
 from collections import namedtuple
 
+from neurolab.formats.base import BaseFormat
+
 try:
     from collections import OrderedDict
 except ImportError:
-    from ordereddict import OrderedDict
+    from neurolab.utils.ordereddict import OrderedDict
 
 import numpy
 from numpy.core.records import fromfile, fromarrays
+
+class TDTFormat(BaseFormat):
+    slug = 'tucker-davis'
+    writable = False
+    
+    def __init__(self, sourcefile):
+        super(TDTFormat, self).__init__(sourcefile)
+        self.block = Block(path=sourcefile.fullpath)
+    
+    
+    def filedata(self):
+        return {
+            'recording_time': self.block.starttime,
+            'channels': {
+                ch.name: {
+                    'sampling_rate':    ch.sampling_rate,
+                    'size':             ch.totalsize,
+                }
+                for ch in self.block.channels
+            },
+            'length': self.block.length.seconds + self.block.length.microseconds*1e-6
+        }
+    
+    def read_dataset(self, channels, starttime=0, endttime=None):
+        dataset = {}
+        for channel in channels:
+            dataset[channel] = self.block.channelsdict[channel][slice(starttime, endttime)]
+        return dataset
+    
+    def write_dataset(self, *args, **kwargs):
+        raise NotImplementedError('Cannot write data in Tucker-Davis format')
+    
+
+
+def register_formats(formats):
+    formats.extend(TDTFormat)
+
 
 tsq_dtype = [
     ('size', 'i4'),
@@ -72,10 +111,15 @@ class Tank(object):
     
 
 class Block(object):
-    def __init__(self, name, tank):
-        self.name = name
+    def __init__(self, name=None, tank=None, path=None):
+        if path is not None:
+            path = str(path)
+            bits = os.path.split(path)
+        
+        self.name = name or bits[1]
         self._signals = OrderedDict()
-        self.tank = tank
+        self.tank = tank or Tank(bits[0])
+        self.path = path or os.path.join(tank.dirname, name)
     
     
     @property
@@ -104,6 +148,9 @@ class Block(object):
             self._channelsdict = dict([(ch.name, ch) for ch in self.channels])
         return self._channelsdict
     
+    @property
+    def tankname(self):
+        return self.tank.name
     
     @property
     def is_block(self):
@@ -120,14 +167,14 @@ class Block(object):
     @property
     def starttime(self):
         if len(self.channels):
-            return self.channels[0].starttime
+            return datetime.fromtimestamp(self.channels[0].starttime)
         else:
             return 0
     
     @property
     def endtime(self):
         if len(self.channels):
-            return self.channels[0].endtime
+            return datetime.fromtimestamp(self.channels[0].endtime)
         else:
             return 0
     
@@ -137,11 +184,16 @@ class Block(object):
     
     @property
     def tev(self):
-        return self.tank._block_path(self.name, 'tev')
+        return self._filepath('tev')
     
     @property
     def tsq(self):
-        return self.tank._block_path(self.name, 'tsq')
+        print self._filepath('tsq')
+        return self._filepath('tsq')
+    
+    
+    def _filepath(self, ext):
+        return os.path.join(self.path, "%s_%s.%s" % (self.tankname, self.name, ext))
     
     
     def open(self):
@@ -189,7 +241,7 @@ class Group(object):
     def channels(self):
         if not hasattr(self, '_channels'):
             self._channels = [Channel(self, ch, self.block)
-                for ch in self._channel_indices()]
+                for ch in self.channel_indices()]
         return self._channels
     
     @property
@@ -205,7 +257,7 @@ class Group(object):
         return self.channels[0].dtype
     
     
-    def _channel_indices(self):
+    def channel_indices(self):
         return numpy.unique(self.header['channel'])
     
 

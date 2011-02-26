@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+bin="$(pwd)/$(dirname $0)"
+base="$(dirname $bin)"
+/usr/bin/env python "$base/httpserver/manage.py" shell

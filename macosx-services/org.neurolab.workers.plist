@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>EnvironmentVariables</key>
+      <dict>
+             <key>PATH</key>
+             <string>/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/bin</string>
+      </dict>
+	<key>Label</key>
+	<string>org.neurolab.workers</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/users/mathieudamours/laboratoire/neurolab/bin/start_workers</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+</dict>
+</plist>

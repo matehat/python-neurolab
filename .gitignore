@@ -2,3 +2,4 @@
 .dropbox
 Icon*
 .DS_Store
+db/*
