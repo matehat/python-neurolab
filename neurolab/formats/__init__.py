@@ -8,7 +8,7 @@ def writable_formats():
 
 formats.writables = writable_formats
 
-for ext in config.SUPPORTED_FORMATS:
+for ext in config.FILEFORMATS:
     try:
         mod = __import__("neurolab.formats.%s" % ext, {}, {}, 'register')
         getattr(mod, 'register_formats', lambda reg: None)(formats)

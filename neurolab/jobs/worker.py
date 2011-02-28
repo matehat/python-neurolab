@@ -7,7 +7,8 @@ from pymongo.dbref import DBRef
 
 import config
 from neurolab.jobs.models import *
-from neurolab.db import mongodb, data
+from neurolab.tasks import *
+from neurolab.db import mongodb
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'httpserver.settings'
 
@@ -41,7 +42,6 @@ if __name__ == '__main__':
             upsert=False
         )
         if obj is not None:
-            print obj
             job = Job._from_son(obj)
             print "Got a job: %s" % repr(job)
             
@@ -50,6 +50,7 @@ if __name__ == '__main__':
                 coll.remove({'_id': obj['_id']})
             except Exception as e:
                 print e
+                raise
                 job.handle_error(e)
                 job.inprogress = False
                 job.worker = None

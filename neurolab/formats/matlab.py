@@ -12,26 +12,26 @@ class MatlabFormat(BaseFormat):
         except:
             return {}
     
-    def filedata(self):
+    def metadata(self):
         matfile = self.matfile()
-        return {'channels': dict([(k, {}) for k in matfile.keys()])}
+        return {'waves': dict([(k, {}) for k in matfile.keys()])}
         del matfile
     
-    def read_dataset(self, channels, starttime=0, endtime=None):
+    def read_dataset(self, waves, starttime=0, endtime=None):
         matfile = self.matfile()
         for k in matfile:
-            if k not in channels:
+            if k not in waves:
                 del matfile[k]
         
         dataset = {}
-        for channel in channels:
+        for channel in waves:
             dataset[channel] = matfile[k][slice(starttime, endtime)]
         del matfile
         return dataset
     
-    def write_dataset(self, channels):
+    def write_dataset(self, waves):
         data = self.matfile()
-        data.update(channels)
+        data.update(waves)
         self.sourcefile.mkdirs()
         savemat(self.sourcefile.fullpath, data)
     

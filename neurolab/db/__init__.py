@@ -17,4 +17,4 @@ def mongodb(collection=None):
 
 
 connect(MONGO_DB, port=MONGO_PORT)
-from neurolab.core.auth import SafeDocument
+from neurolab.db.auth import SafeDocument

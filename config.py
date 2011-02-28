@@ -36,7 +36,7 @@ QUEUES = {
         'time': 0.5,
     },
     'files': {
-        'workers': 1,
+        'workers': 2,
         'time': 1.0,
     }
 }
@@ -45,6 +45,7 @@ HTTP_WORKERS = 1
 HTTP_ADDRESS = '127.0.0.1:4000'
 
 MEDIA_URL = '/media/'
-SUPPORTED_FORMATS = ('tuckerdavis', 'matlab', 'hierarchicaldata')
+FILEFORMATS = ('tuckerdavis', 'matlab', 'hierarchicaldata', 'axon')
+TASKS = ('extraction', 'signal')
 
 SECRET_KEY = 's6@q_@#++)ubmx04x+rs_j^f4ywnz1c0-)1r&a97v))l1n14tg'

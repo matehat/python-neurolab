@@ -20,7 +20,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (('Mathieu Blais-D\'Amours', 'mathieu.blais-damours.1@ulaval.ca'),)
 AUTHENTICATION_BACKENDS = (
-    'neurolab.core.auth.Backend',
+    'neurolab.db.auth.Backend',
 )
 SESSION_ENGINE = 'mongoengine.django.sessions'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
@@ -67,7 +67,7 @@ ROOT_URLCONF = 'httpserver.urls'
 TEMPLATE_DIRS = (config.TEMPLATES['DJANGO'],)
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
-    'core.media_url',
+    'httpserver.web.media_url',
     'django.contrib.messages.context_processors.messages',
 )
 

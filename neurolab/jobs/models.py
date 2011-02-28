@@ -37,11 +37,19 @@ class Signal(Document):
 class Worker(Document):
     queue = ReferenceField('Queue')
     pid = IntField()
+    
+    def send_signal(self, action):
+        Signal.objects.create(target=self, action=action)
+    
 
 class Queue(Document):
     name = StringField()
     time = FloatField()
     workers = IntField()
+    
+    def send_signal(self, action):
+        Signal.objects.create(target=self, action=action)
+    
 
 
 for queue in ('graphics', 'data', 'files'):

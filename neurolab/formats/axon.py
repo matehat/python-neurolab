@@ -2,18 +2,57 @@ import os
 import numpy as np
 import struct
 
+from neurolab.formats.base import BaseFormat
+
 class ATFFormat(BaseFormat):
-    slug = 'axon-text-format'
+    slug = 'axon-text'
 
 class ABFFormat(BaseFormat):
-    slug = 'axon-binary-format'
-    def filedata(self):
-        pass
+    slug = 'axon-binary'
+    writable = False
     
-    def get_array(self, channels, starttime=0, endtime=None):
-        pass
+    @property
+    def abfile(self):
+        return Abf(self.sourcefile.fullpath)
+    
+    def metadata(self):
+        from os.path import getmtime
+        from datetime import datetime, timedelta
+        
+        meta = {}
+        _, params = self.abfile.abfload()
+        if params is False:
+            return {}
+        
+        mtime = datetime.fromtimestamp(getmtime(self.sourcefile.fullpath))
+        meta['recording_time'] = datetime(year=mtime.year, month=mtime.month, day=mtime.day) + \
+            timedelta(seconds=params['lFileStartTime'][0])
+        meta['length'] = params['recTime'][1] - params['recTime'][0]
+        waves = [ch.strip() for ch in params['recChNames']]
+        sampling = round(params['dataPtsPerChan'] / meta['length'])
+        meta['waves'] = {
+            ch: {'sampling_rate': sampling}
+            for ch in waves
+        }
+        return meta
+    
+    def read_dataset(self, waves, starttime=0, endtime=None):
+        data, params = self.abfile.abfload()
+        if data is False:
+            return {}
+        
+        channelnames = [ch.strip() for ch in params['recChNames']]
+        dset = {}
+        for ch in waves:
+            if ch not in channelnames:
+                continue
+            dset[ch] = data[:, (channelnames.index(ch)), :].transpose().ravel()
+        return dset
     
 
+
+def register_formats(formats):
+    formats.extend(ABFFormat)
 
 def save_atf(f, signal, filedesc=""):
     """
@@ -46,6 +85,7 @@ def save_atf(f, signal, filedesc=""):
     _write_header(f, filedesc, signal.size/2)
     numpy.savetxt(f, signal, fmt="%d\t%f\r")
     f.close()
+
 
 class Abf():
     def __init__(self, fn=None):
@@ -633,7 +673,7 @@ class Abf():
                     print 'start is larger than or equal to stop'            
                         
                 
-            if rem(h["dataPts"], h["nADCNumChannels"]) > 0:        
+            if h["dataPts"] % h["nADCNumChannels"] > 0:        
                 fid.close()        
                 print 'number of data points not OK'        
                 
@@ -645,10 +685,11 @@ class Abf():
                 
             # recording start and stop times in seconds from midnight
             h["recTime"] = h["lFileStartTime"]    
-            h["recTime"] = np.hstack(h["recTime"], h["recTime"] + tmp)    
-            if fid.seek(startPt * dataSz + headOffset) != 0:        
+            h["recTime"] = np.hstack((h["recTime"], h["recTime"] + tmp))    
+            if fid.seek((startPt * dataSz + headOffset)[0]) != 0:        
                 fid.close()        
-                print 'something went wrong positioning file pointer (too few data points ?)'        
+                print 'something went wrong positioning file pointer (too few data points ?)'
+                return [False, False]
                 
             if doLoadData:        
                 # *** decide on the most efficient way to read data:

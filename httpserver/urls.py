@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from httpserver import web, restful
-from labo.db import *
+from httpserver import web
+from neurolab.db import *
 
 urlpatterns = web.urlpatterns

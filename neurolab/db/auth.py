@@ -156,7 +156,7 @@ class User(Document):
 
 class Backend(object):
     """
-    Authenticate using MongoEngine and neurolab.core.auth.User.
+    Authenticate using MongoEngine and neurolab.db.auth.User.
     """
     
     def authenticate(self, username=None, password=None):

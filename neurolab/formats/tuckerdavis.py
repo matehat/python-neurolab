@@ -21,22 +21,28 @@ class TDTFormat(BaseFormat):
         self.block = Block(path=sourcefile.fullpath)
     
     
-    def filedata(self):
+    def metadata(self):
         return {
             'recording_time': self.block.starttime,
-            'channels': {
+            'waves': {
                 ch.name: {
-                    'sampling_rate':    ch.sampling_rate,
-                    'size':             ch.totalsize,
+                    'sampling_rate':    float(ch.sampling_rate),
                 }
                 for ch in self.block.channels
             },
-            'length': self.block.length.seconds + self.block.length.microseconds*1e-6
+            'groups': {
+                grp.code: {
+                    'sampling_rate':    float(grp.sampling_rate),
+                    'waves':         [ch.name for ch in grp.channels],
+                }
+                for grp in self.block.groups
+            },
+            'length': float(self.block.length.seconds + self.block.length.microseconds*1e-6)
         }
     
-    def read_dataset(self, channels, starttime=0, endttime=None):
+    def read_dataset(self, waves, starttime=0, endttime=None):
         dataset = {}
-        for channel in channels:
+        for channel in waves:
             dataset[channel] = self.block.channelsdict[channel][slice(starttime, endttime)]
         return dataset
     
@@ -188,7 +194,6 @@ class Block(object):
     
     @property
     def tsq(self):
-        print self._filepath('tsq')
         return self._filepath('tsq')
     
     
@@ -219,7 +224,6 @@ class Group(object):
     def __init__(self, block, code):
         self.block = block
         self.code = code
-    
     
     def time_vector(self, index=None):
         t = numpy.arange(self.totalsize) / self.sampling_rate

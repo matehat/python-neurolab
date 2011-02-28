@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NEUROLAB{% if page_title %} | {{ page_title }}{% endif %}</title>
+    
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/jqueryui.css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/site.css">
+    {% block extra_style %}{% endblock %}
+    <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico">
+    
+    <script src="{{ MEDIA_URL }}js/externals.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ MEDIA_URL }}js/resource.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ MEDIA_URL }}js/appkit.js" type="text/javascript" charset="utf-8"></script>
+    {% block extra_script %}{% endblock %}
+  </head>
+  <body id="">
+    <div id="container">
+      {% block base %}{% endblock %}
+    </div>
+  </body>
+</html>
