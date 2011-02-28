@@ -141,6 +141,7 @@ class TDExtractSlices(Task):
             job.save()
     
     def handle_job(self, job):
+        print "Handling job ... reading..."
         data = self.file.read(self.criteria['waves'], 
             job.data['starttime'], job.data['endtime']
         )
