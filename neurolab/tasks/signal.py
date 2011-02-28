@@ -29,5 +29,6 @@ class Scalogram(Task):
     name = 'Calculate the time-frequency scalogram'
     slug = 'time-freq-scalogram'
 
+
 def register_tasks(registry):
     registry.extend(Resample, Scalogram)
