@@ -129,7 +129,7 @@ class LoadTask(Task):
     
 
 class ProcessingTask(Task):
-    job_queue = 'data'
+    job_queue = 'processing'
     argument = ReferenceField(Component)
     result = ReferenceField(Component)
     
@@ -168,7 +168,7 @@ class ProcessingTask(Task):
 
 ProcessingTask.tasks = ObjectList(ProcessingTask)
 
-for queue in ('graphics', 'data', 'files'):
+for queue in ('graphics', 'processing', 'files'):
     queue, created = Queue.objects.get_or_create(name=queue)
     if created:
         queue.workers = config.QUEUES[queue.name]['workers']
