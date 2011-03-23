@@ -42,6 +42,10 @@ ul.dataset-entries {
         border: 1px solid #e9e9e9;
         margin-bottom: 10px;
         padding: 10px;
+        
+        div.component-controls {
+          float: right;
+        }
       }
     }
     div.left-pane {
@@ -102,6 +106,10 @@ ul.dataset-entries {
               font-size: 0.9em;
               > span.icon {
                 background-position: -32px -96px;
+                
+                &.delete {
+                  display: none;
+                }
               }
             }
             
@@ -124,6 +132,17 @@ ul.dataset-entries {
                 
                 > span.icon {
                   background-image: url(../jqueryui/images/ui-icons_fafafa_256x240.png);
+                  
+                  &.delete {
+                    float: right;
+                    display: block;
+                    background-position: -176px -97px;
+                    border-radius: 2px;
+                    
+                    &:hover {
+                      background-color: rgba(0,0,0, 0.2);
+                    }
+                  }
                 }
               }
               ul.components {

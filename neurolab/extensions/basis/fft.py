@@ -1,9 +1,8 @@
 from django import forms
 
+import config
 from neurolab.tasks.models import ProcessingTask, TaskJob
 from neurolab.db.models import SourceFile, Datasource
-
-FFT_CHUNKSIZE = 2**13
 
 class WaveProcessingTask(ProcessingTask):
     argument_types = ('wave', 'wave-group')
@@ -20,10 +19,11 @@ class Resample(WaveProcessingTask):
         arg = self.argument
         cls = type(arg)
         result = self.result = cls(
+            block=arg.block,
             parent=arg, 
             name=name,
         )
-        for prop in ('dtype', 'count', 'block'):
+        for prop in ('dtype', 'count'):
             if hasattr(arg, prop):
                 setattr(result, prop, getattr(arg, prop))
         result.sampling_rate = self.criteria['sampling_rate']
@@ -32,7 +32,7 @@ class Resample(WaveProcessingTask):
     
     def chunks(self, inp):
         factor = self.argument.sampling_rate / self.result.sampling_rate
-        chunksize = FFT_CHUNKSIZE
+        chunksize = config.CHUNKSIZES['fft']
         
         def _chunks(t_len):
             cur = 0

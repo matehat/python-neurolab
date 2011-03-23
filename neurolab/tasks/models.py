@@ -168,7 +168,7 @@ class ProcessingTask(Task):
 
 ProcessingTask.tasks = ObjectList(ProcessingTask)
 
-for queue in ('graphics', 'processing', 'files'):
+for queue in ('output', 'processing', 'files'):
     queue, created = Queue.objects.get_or_create(name=queue)
     if created:
         queue.workers = config.QUEUES[queue.name]['workers']

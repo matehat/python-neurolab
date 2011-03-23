@@ -1,0 +1,14 @@
+<form action="" method="" class="delete-form">
+  <h5>Are you sure you wish to delete this component?</h5>
+  
+  <p>Also, would you like to discard its associated data from disk?</p>
+  <input type="checkbox" name="discard" value="" id="discard"><label for="discard">Discard data</label><br />
+  
+  {% if cmp.template %}
+    <input type="checkbox" name="delete_template" value="" id="delete_template"><label for="delete_template">Delete for whole dataset</label><br />
+  {% endif %}
+  <br />
+  
+  <button class="submit">Delete</button>
+  <button class="cancel">Cancel</button>
+</form>

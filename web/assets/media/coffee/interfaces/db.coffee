@@ -61,10 +61,78 @@ jQuery ($) ->
         block_id = block.attr 'data-oid'
         bindComponent = ->
           cmp = $ @
+          cmp_id = cmp.attr 'data-oid'
           graph_element = cmp.find '.component-image'
           if (type = graph_element.attr 'data-type')?
             grapher = new $G[type] graph_element
             grapher.prepare()
+          
+          cmp.find('a.delete').button
+            icons: 
+              primary: 'ui-icon-trash'
+            text: no
+          .click (e) ->
+            e.preventDefault()
+            cmp.loading()
+            url = "/db/#{ds_id}/blocks/#{block_id}/components/#{cmp_id}/delete/"
+            $.get url, {},
+              (data) ->
+                cmp.unblock()
+                delete_form = $(data).appendTo 'body'
+                delete_form.formDialog
+                  title: 'Delete a component?'
+                .bind('dialogclose', -> delete_form.remove())
+                .find(':input').uniform().end()
+                .find('.cancel').click (e) -> 
+                  e.preventDefault()
+                  delete_form.dialog 'close'
+                .end().find('.submit').click (e) ->
+                  e.preventDefault()
+                  $.post url, delete_form.formSerialize(), ->
+                    viewer.children(":not(.empty)").remove().end()
+                      .find('.empty').show()
+                    $("li.block ul.components li").filter(-> $(@).attr('data-oid') is cmp_id).remove()
+                    delete_form.dialog 'close'
+                  
+          
+          cmp.find('a.process').button
+            icons: 
+              primary: 'ui-icon-arrowthick-1-e'
+            text: no
+          .click (e) ->
+            e.preventDefault()
+            cmp.loading()
+            url = "/db/#{ds_id}/blocks/#{block_id}/components/#{cmp_id}/process/"
+            $.get url, {},
+              (data) ->
+                cmp.unblock()
+                proc_form = $(data).appendTo 'body'
+                form_body = proc_form.find '.process-form-body'
+                console.log form_body
+                proc_form.formDialog
+                  title: 'Process this component?'
+                .bind('dialogclose', -> proc_form.remove())
+                .find(':input').uniform().end()
+                .find('.cancel').click (e) -> 
+                  e.preventDefault()
+                  proc_form.dialog 'close'
+                .end().find('[name=process_type]').change ->
+                  $.get url, {'task': $(@).val()}, (data) ->
+                    form_body.empty().append data
+                    form_body.find(':input').uniform().end()
+                    proc_form.find('.submit').removeAttr('disabled')
+                    $.uniform.update()
+                .end().find('.submit').click (e) ->
+                  e.preventDefault()
+                  $.post url, form_body.closest('form').formSerialize(),
+                    (data) ->
+                      if data.success
+                        proc_form.dialog 'close'
+                      else
+                        $$.showErrors proc_form, data
+                    , 'json'
+          
+          cmp.find('div.component-controls').buttonset()
         
         bindComponents = ->
           cmps = @
@@ -82,8 +150,19 @@ jQuery ($) ->
                   ds.find('li.cmp.selected').removeClass 'selected'
                   cmp.addClass 'selected'
                   cmp_viewer = $ data
-                  viewer.empty().append cmp_viewer
+                  viewer.children(":not(.empty)").remove().end()
+                    .find('.empty').hide().end()
+                    .append cmp_viewer
                   bindComponent.call cmp_viewer
+        
+        block.find('span.block-name > span.icon.delete').click (e) ->
+          e.preventDefault()
+          url = "/db/#{ds_id}/blocks/#{block_id}/delete/"
+          return unless confirm "Are you sure you wish to delete this block?\nData on disk will be kept intact."
+          block.loading()
+          $.get url, {}, ->
+            block.remove()
+            viewer.children(':not(.empty)').remove().end().find('.empty').show()
         
         block.children('span.block-name').click (e) ->
           e.preventDefault()

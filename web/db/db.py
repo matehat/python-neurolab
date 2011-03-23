@@ -60,7 +60,7 @@ def create(request):
             template = ComponentTemplate.objects.create(
                 name=base['name'], 
                 component_slug=base['type'],
-                criteria=componentform.cleaned_data
+                criteria=componentform.cleaned_data,
             )
             dset.components.append(template)
         
@@ -130,6 +130,16 @@ def delete(request, ds_id):
     return HttpResponse(json.dumps({'success': True}), mimetype="application/json")
 
 
+def block_delete(request, ds_id, block_id):
+    from neurolab.db.models import *
+    
+    try:
+        block = Block.objects.get(id=block_id, dataset=ds_id)
+    except Block.DoesNotExist:
+        raise Http404
+    block.delete()
+    return HttpResponse("")
+
 def block_components(request, ds_id, block_id):
     from neurolab.db.models import *
     
@@ -154,6 +164,93 @@ def block_view(request, ds_id, block_id):
     })
 
 
+def component_delete(request, ds_id, block_id, cmp_id):
+    from neurolab.db.models import *
+    
+    try:
+        block = Block.objects.get(id=block_id, dataset=ds_id)
+        component = block.components().with_id(cmp_id)
+    except (Block.DoesNotExist, Component.DoesNotExist):
+        raise Http404
+    
+    if request.method == 'POST':
+        discard = 'discard' in request.POST
+        delete_template = 'delete_template' in request.POST
+        
+        if delete_template:
+            template = component.template
+            for child in template.offspring():
+                child.template = None
+                child.save()
+            for instance in template.instances():
+                pass
+                instance.delete(discard)
+            template.delete()
+        else:
+            component.delete(discard)
+        
+        return HttpResponse("")
+    else:
+        return render_to_response("partials/db/block/component_delete.html", {
+            'cmp': component,
+        })
+
+def component_process(request, ds_id, block_id, cmp_id):
+    import json
+    from neurolab.db.models import *
+    from neurolab.tasks.models import ProcessingTask
+    
+    try:
+        block = Block.objects.get(id=block_id, dataset=ds_id)
+        component = block.components().with_id(cmp_id)
+    except (Block.DoesNotExist, Component.DoesNotExist):
+        raise Http404
+    
+    if request.method == 'POST':
+        template = 'template' in request.POST
+        task = ProcessingTask.tasks[request.POST['process_type']]
+        form = task.CriteriaForm(request.POST)
+        errors = {}
+        if 'name' not in request.POST:
+            errors['name'] = ['This field is required']
+        
+        if not errors and form.is_valid():
+            criteria = form.cleaned_data
+            if template:
+                if ComponentTemplate.objects(parent=component.template, name=request.POST['name']).count() > 0:
+                    raise Http404
+                
+                ComponentTemplate.objects.create(parent=component.template, name=request.POST['name'],
+                    task_slug=task.slug, criteria=criteria)
+                component.template.update()
+            else:
+                if task.objects(argument.component, name=request.POST['name']).count() > 0:
+                    raise Http404
+                
+                task.create(name=request.POST['name'], argument=component, criteria=criteria)
+            
+            return HttpResponse(json.dumps({'success': True}), mimetype="application/json")
+        else:
+            errors.update(form.errors)
+            return HttpResponse(json.dumps(errors), mimetype="application/json")
+    else:
+        if 'task' in request.GET:
+            try:
+                task = ProcessingTask.tasks[request.GET['task']]
+            except KeyError:
+                raise Http404
+            
+            return render_to_response("partials/db/block/component_processform.html", {
+                'task': task,
+                'form': task.CriteriaForm(),
+                'cmp': component
+            })
+        else:
+            return render_to_response("partials/db/block/component_process.html", {
+                'cmp': component,
+            })
+
+
 urlpatterns = patterns('',
     secured(r'^$',   index),
     secured(r'^new$', new),
@@ -163,6 +260,10 @@ urlpatterns = patterns('',
     secured(r'^(?P<ds_id>[0-9a-f]+)/update$', update),
     secured(r'^(?P<ds_id>[0-9a-f]+)/delete$', delete),
     
-    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/components/', block_components),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/delete/$', block_delete),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/components/$', block_components),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/components/(?P<cmp_id>[0-9a-f]+)/delete/$', component_delete),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/components/(?P<cmp_id>[0-9a-f]+)/process/$', component_process),
+    
     secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/view/', block_view),
 )

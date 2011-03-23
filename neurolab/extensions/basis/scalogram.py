@@ -1,7 +1,7 @@
 from django import forms
 
 import config
-from neurolab.extensions.fft import WaveProcessingTask, ProcessingTask
+from neurolab.extensions.basis.fft import WaveProcessingTask, ProcessingTask
 from neurolab.db import *
 from neurolab.db.models import Component
 from neurolab.utils import metadata
@@ -23,7 +23,7 @@ class TimeFrequencyScalogram(WaveProcessingTask):
         
         result = self.result = cls(
             parent=self.argument, 
-            block=self.argument.block,
+            block=argument.block,
             name=name,
         )
         for prop in ('dtype', 'count'):
@@ -102,7 +102,7 @@ class ScalogramPowerAnalysis(ProcessingTask):
         freq_stop = forms.FloatField(label='Last Frequency', required=True, initial=100.0)
     
     def create_component(self, name):
-        from neurolab.extensions.waves import Wave, Wavegroup
+        from neurolab.extensions.basis.waves import Wave, Wavegroup
         cls = Wave if self.argument.slug == 'scalogram' else Wavegroup
         arg = self.argument
         result = self.result = cls(

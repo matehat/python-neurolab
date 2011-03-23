@@ -26,7 +26,7 @@ MONGO_PORT = 8001
 MONGO_DB = 'neurolab'
 
 QUEUES = {
-    'graphics': {
+    'output': {
         'workers': 1,
         'time': 1.0
     },
@@ -47,9 +47,12 @@ MEDIA_URL = '/media/'
 
 CHUNKSIZES = {
     'read': 20*(2**20),
-    'fft': 2**13
+    'fft': 2**14
 }
 FILEFORMATS = ('tuckerdavis', 'axon')
-TASKS = ('waves', 'fft', 'scalogram')
+EXTENSIONS = (
+    'basis.waves', 'basis.fft', 'basis.scalogram',
+    'project.chronic',
+)
 
 SECRET_KEY = 's6@q_@#++)ubmx04x+rs_j^f4ywnz1c0-)1r&a97v))l1n14tg'

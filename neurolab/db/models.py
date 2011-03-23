@@ -353,6 +353,7 @@ class ComponentTemplate(Document):
             "source=%s" % self.component.name
         )
     
+    
     @property
     def component(self):
         if not hasattr(self, '_component'):
@@ -433,6 +434,16 @@ class Component(Document):
     @property
     def length(self):
         return self.block.length
+    
+    
+    def is_source(self):
+        return self.template and self.template.component_slug is not None
+    
+    def tasks(self):
+        from neurolab.tasks.models import *
+        for task in ProcessingTask.tasks:
+            if self.slug in task.argument_types:
+                yield task
     
     
     class Array(object):

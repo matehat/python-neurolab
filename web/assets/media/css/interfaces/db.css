@@ -43,6 +43,9 @@ ul.dataset-entries li.dataset div.block-view .component-view {
   margin-bottom: 10px;
   padding: 10px;
 }
+ul.dataset-entries li.dataset div.block-view .component-view div.component-controls {
+  float: right;
+}
 ul.dataset-entries li.dataset div.left-pane {
   border: 1px solid #f1f1f1;
   border-radius: 8px;
@@ -97,6 +100,9 @@ ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block span.bl
 ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block span.block-name > span.icon {
   background-position: -32px -96px;
 }
+ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block span.block-name > span.icon.delete {
+  display: none;
+}
 ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block ul.components {
   display: none;
   opacity: 0;
@@ -116,6 +122,15 @@ ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block.expande
 }
 ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block.expanded span.block-name > span.icon {
   background-image: url(../jqueryui/images/ui-icons_fafafa_256x240.png);
+}
+ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block.expanded span.block-name > span.icon.delete {
+  float: right;
+  display: block;
+  background-position: -176px -97px;
+  border-radius: 2px;
+}
+ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block.expanded span.block-name > span.icon.delete:hover {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 ul.dataset-entries li.dataset div.left-pane ul.groups ul.blocks li.block.expanded ul.components {
   display: block;

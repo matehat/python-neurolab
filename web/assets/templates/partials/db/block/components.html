@@ -1,6 +1,6 @@
 <ul class="components">
   {% for component in blk.components %}
-  <li class="cmp">
+  <li class="cmp" data-oid="{{ component.id }}">
     <span class="cmp-name {% if component.available %}available{% else %}unavailable{% endif %}">
       <span class="icon"></span>
       {{ component.name }}

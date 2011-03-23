@@ -72,13 +72,92 @@
           block = $(this);
           block_id = block.attr('data-oid');
           bindComponent = function() {
-            var cmp, graph_element, grapher, type;
+            var cmp, cmp_id, graph_element, grapher, type;
             cmp = $(this);
+            cmp_id = cmp.attr('data-oid');
             graph_element = cmp.find('.component-image');
             if ((type = graph_element.attr('data-type')) != null) {
               grapher = new $G[type](graph_element);
-              return grapher.prepare();
+              grapher.prepare();
             }
+            cmp.find('a.delete').button({
+              icons: {
+                primary: 'ui-icon-trash'
+              },
+              text: false
+            }).click(function(e) {
+              var url;
+              e.preventDefault();
+              cmp.loading();
+              url = "/db/" + ds_id + "/blocks/" + block_id + "/components/" + cmp_id + "/delete/";
+              return $.get(url, {}, function(data) {
+                var delete_form;
+                cmp.unblock();
+                delete_form = $(data).appendTo('body');
+                return delete_form.formDialog({
+                  title: 'Delete a component?'
+                }).bind('dialogclose', function() {
+                  return delete_form.remove();
+                }).find(':input').uniform().end().find('.cancel').click(function(e) {
+                  e.preventDefault();
+                  return delete_form.dialog('close');
+                }).end().find('.submit').click(function(e) {
+                  e.preventDefault();
+                  return $.post(url, delete_form.formSerialize(), function() {
+                    viewer.children(":not(.empty)").remove().end().find('.empty').show();
+                    $("li.block ul.components li").filter(function() {
+                      return $(this).attr('data-oid') === cmp_id;
+                    }).remove();
+                    return delete_form.dialog('close');
+                  });
+                });
+              });
+            });
+            cmp.find('a.process').button({
+              icons: {
+                primary: 'ui-icon-arrowthick-1-e'
+              },
+              text: false
+            }).click(function(e) {
+              var url;
+              e.preventDefault();
+              cmp.loading();
+              url = "/db/" + ds_id + "/blocks/" + block_id + "/components/" + cmp_id + "/process/";
+              return $.get(url, {}, function(data) {
+                var form_body, proc_form;
+                cmp.unblock();
+                proc_form = $(data).appendTo('body');
+                form_body = proc_form.find('.process-form-body');
+                console.log(form_body);
+                return proc_form.formDialog({
+                  title: 'Process this component?'
+                }).bind('dialogclose', function() {
+                  return proc_form.remove();
+                }).find(':input').uniform().end().find('.cancel').click(function(e) {
+                  e.preventDefault();
+                  return proc_form.dialog('close');
+                }).end().find('[name=process_type]').change(function() {
+                  return $.get(url, {
+                    'task': $(this).val()
+                  }, function(data) {
+                    form_body.empty().append(data);
+                    form_body.find(':input').uniform().end();
+                    proc_form.find('.submit').removeAttr('disabled');
+                    return $.uniform.update();
+                  });
+                }).end().find('.submit').click(function(e) {
+                  e.preventDefault();
+                  return $.post(url, form_body.closest('form').formSerialize(), function(data) {
+                    if (data.success) {
+                      return proc_form.dialog('close');
+                    } else {
+                      return $$.showErrors(proc_form, data);
+                    }
+                  }, 'json');
+                });
+              });
+            });
+            return cmp.find('div.component-controls').buttonset();
           };
           bindComponents = function() {
             var cmps;
@@ -102,12 +181,25 @@
                   ds.find('li.cmp.selected').removeClass('selected');
                   cmp.addClass('selected');
                   cmp_viewer = $(data);
-                  viewer.empty().append(cmp_viewer);
+                  viewer.children(":not(.empty)").remove().end().find('.empty').hide().end().append(cmp_viewer);
                   return bindComponent.call(cmp_viewer);
                 });
               });
             });
           };
+          block.find('span.block-name > span.icon.delete').click(function(e) {
+            var url;
+            e.preventDefault();
+            url = "/db/" + ds_id + "/blocks/" + block_id + "/delete/";
+            if (!confirm("Are you sure you wish to delete this block?\nData on disk will be kept intact.")) {
+              return;
+            }
+            block.loading();
+            return $.get(url, {}, function() {
+              block.remove();
+              return viewer.children(':not(.empty)').remove().end().find('.empty').show();
+            });
+          });
           return block.children('span.block-name').click(function(e) {
             var block_title;
             e.preventDefault();
