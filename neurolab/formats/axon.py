@@ -2,57 +2,61 @@ import os
 import numpy as np
 import struct
 
-from neurolab.formats.base import BaseFormat
+from neurolab.formats import Format
 
-class ATFFormat(BaseFormat):
-    slug = 'axon-text'
+#class ATFFormat(Format):
+#    slug = 'axon-text'
+#    name = 'Axon Text'
 
-class ABFFormat(BaseFormat):
+class ABFFormat(Format):
     slug = 'axon-binary'
+    name = 'Axon Binary'
     writable = False
     
     @property
     def abfile(self):
         return Abf(self.sourcefile.fullpath)
     
-    def metadata(self):
+    def get_infos(self):
         from os.path import getmtime
         from datetime import datetime, timedelta
         
         meta = {}
-        _, params = self.abfile.abfload()
+        data, params = self.abfile.abfload()
         if params is False:
             return {}
         
         mtime = datetime.fromtimestamp(getmtime(self.sourcefile.fullpath))
-        meta['recording_time'] = datetime(year=mtime.year, month=mtime.month, day=mtime.day) + \
+        meta['starttime'] = datetime(year=mtime.year, month=mtime.month, day=mtime.day) + \
             timedelta(seconds=params['lFileStartTime'][0])
         meta['length'] = params['recTime'][1] - params['recTime'][0]
         waves = [ch.strip() for ch in params['recChNames']]
         sampling = round(params['dataPtsPerChan'] / meta['length'])
-        meta['waves'] = {
-            ch: {'sampling_rate': sampling}
+        
+        dshape = data.shape
+        meta['components'] = {
+            ch: {
+                'sampling_rate': sampling,
+                'type': 'wave',
+                'name': ch,
+                'dtype': data.dtype.name,
+                'size': dshape[0] * dshape[2]
+            }
             for ch in waves
         }
         return meta
     
-    def read_dataset(self, waves, starttime=0, endtime=None):
+    def read_into(self, component, array):
         data, params = self.abfile.abfload()
         if data is False:
             return {}
         
         channelnames = [ch.strip() for ch in params['recChNames']]
-        dset = {}
-        for ch in waves:
-            if ch not in channelnames:
-                continue
-            dset[ch] = data[:, (channelnames.index(ch)), :].transpose().ravel()
-        return dset
+        if component not in channelnames:
+            return {}
+        array[:] = data[:, (channelnames.index(component)), :].transpose().ravel()
     
 
-
-def register_formats(formats):
-    formats.extend(ABFFormat)
 
 def save_atf(f, signal, filedesc=""):
     """
@@ -201,8 +205,7 @@ class Abf():
         
         # check existence of file
         if not os.path.exists(self.fn):    
-            print 'could not find file ' 
-            return
+            return False, False
         
         # -------------------------------------------------------------------------
         #                       PART 2a: determine abf version
@@ -275,7 +278,7 @@ class Abf():
             ProtocolInfo = self.constProtocolInfo()    
             ADCInfo = self.constADCInfo()
         else:    
-            print 'unknown or incompatible file signature'  
+            pass
         
         
         # convert headPar to struct
@@ -289,7 +292,6 @@ class Abf():
         for k,v in headPar.items():    
             fid.seek(v[0])        
                # fid.close()        
-               # print 'something went wrong locating '+ g).name]))        
             #h[k] = struct.unpack(k[1], fid.read(sz)) #read value(s) into dictionary
             if hasattr(v[2],'size'):
                 c = v[2].size
@@ -399,8 +401,7 @@ class Abf():
         # -------------------------------------------------------------------------
         if h["lActualAcqLength"] < h["nADCNumChannels"]:    
             fid.close()    
-            print 'less data points than sampled channels in file'
-            return    
+            return False, False
         
         # the numerical value of all recorded channels (numbers 0..15)
         recChIdx = h["nADCSamplingSeq"][0:h["nADCNumChannels"]]
@@ -436,7 +437,6 @@ class Abf():
                 chInd = recChInd        
             else:        
                 fid.close()        
-                print 'input parameter \'channels\' must either be a cell array holding channel names or the single character \'a\' (=all channels)'     
                 
         else:    
             for i in range(len(channels)):        
@@ -447,18 +447,11 @@ class Abf():
                     # set error flag to 1
                     eflag = 1            
         if eflag:    
-            fid.close()    
-            print'**** available channels:'    
-            print h["recChNames"]    
-            print' '    
-            print'**** requested channels:'    
-            print channels 
-            print 'at least one of the requested channels does not exist in data file (see above)'    
+            fid.close()  
         
         # display available channels if in info mode
         if not doLoadData:    
-            print '**** available channels:'    
-            print h["recChNames"]
+            pass
         
         
         # gain of telegraphed instruments, if any
@@ -478,7 +471,6 @@ class Abf():
             precision = 'f'    
         else:    
             fid.close()    
-            print 'invalid number format'    
         
         headOffset = h["lDataSectionPtr"] * BLOCKSIZE + h["nNumPointsIgnored"] * dataSz
         # h["fADCSampleInterval"] is the TOTAL sampling interval
@@ -497,13 +489,11 @@ class Abf():
         #    should not matter)
         # -------------------------------------------------------------------------
         if h["nOperationMode"] == 1:    
-            print 'data were acquired in event-driven variable-length mode'    
             if h["fFileVersionNumber"] >= 2.0:        
-                print 'abfload currently does not work with data acquired in event-driven variable-length mode and ABF version 2.0'      
+                pass
             else:        
                 if (h["lSynchArrayPtr"] <= 0 or h["lSynchArraySize"] <= 0):            
                     fid.close()            
-                    print 'internal variables \'lSynchArraynnn\' are zero or negative'            
                         
                 if h["fSynchTimeUnit"] == 0:            # time information in synch array section is in terms of ticks
                     h["synchArrTimeBase"] = 1            
@@ -516,12 +506,10 @@ class Abf():
                 # 4 bytes/long, 2 values per episode (start and length)
                 if h["lSynchArrayPtrByte"] + 2 * 4 * h["lSynchArraySize"] < fileSz:            
                     fid.close()            
-                    print 'file seems not to contain complete Synch Array Section'            
                         
                 synchArr = struct.unpack('i', fid.read(h["lSynchArraySize"] * 2))        
                 if h["lSynchArraySize"] * 2 != len(synchArr):            
                     fid.close()            
-                    print 'something went wrong reading synch array section'            
                         
                 # make synchArr a h["lSynchArraySize"] x 2 matrix
                 synchArr = synchArr.cT.reshape(2, h["lSynchArraySize"])[2:1]        
@@ -542,12 +530,10 @@ class Abf():
                         tmpd = np.fromfile(file=fid, dtype=precision, count = segLengthInPts[sweeps[i]])       
                         #tmpd = struct.unpack(precision, fid.read(segLengthInPts[sweeps[i]]))                
               #          if n != segLengthInPts(sweeps(i]):                    
-               #             print 'something went wrong reading episode '+str(sweeps(i])+ ': '+ segLengthInPts(sweeps(i])+' points should have been read, ' +str(n)+ ' points actually read'                  
                                         
                         h["dataPtsPerChan"] = tmpd.size / h["nADCNumChannels"]
                         if n % h["nADCNumChannels"] > 0:                    
                             fid.close()                    
-                            print 'number of data points in episode not OK'                   
                         # separate channels..
                         tmpd = tmpd.reshape((h["nADCNumChannels"], h["dataPtsPerChan"]))               
                         # retain only requested channels
@@ -561,14 +547,13 @@ class Abf():
                         d[i] = tmpd                
         elif h["nOperationMode"]  in (2, 5):    
             if h["nOperationMode"] == 2:        
-                print'data were acquired in event-driven fixed-length mode'        
+                pass
             else:        
-                print'data were acquired in waveform fixed-length mode (clampex only)'        
+                pass
                 
             # extract timing information on sweeps
             if (h["lSynchArrayPtr"] <= 0 or h["lSynchArraySize"] <= 0):        
                 fid.close()        
-                print 'internal variables \'lSynchArraynnn\' are zero or negative'        
                 
             if h["fSynchTimeUnit"] == 0:        # time information in synch array section is in terms of ticks
                 h["synchArrTimeBase"] = 1        
@@ -581,11 +566,9 @@ class Abf():
             # 4 bytes/long, 2 values per episode (start and length)
             if h["lSynchArrayPtrByte"] + 2 * 4 * h["lSynchArraySize"] > fileSz:        
                 fid.close()        
-                print 'file seems not to contain complete Synch Array Section'        
                 
             fid.seek(h["lSynchArrayPtrByte"])       
             #    fid.close()        
-             #   print 'something went wrong positioning file pointer to Synch Array Section'        
                 
             synchArr = np.fromfile(file=fid, dtype='i', count = h["lSynchArraySize"] * 2)   
             #struct.unpack('i',fid.read(h["lSynchArraySize"] * 2))    
@@ -597,7 +580,6 @@ class Abf():
            # synchArr = synchArr.reshape((2,h["lSynchArraySize"]))[2, 1] # rearrange dimension, why???    
             if np.unique(synchArr.transpose()[1]).size > 1:        
                 fid.close()        
-                print 'sweeps of unequal length in file recorded in fixed-length mode'        
                 
             # the length of sweeps in sample points (**note: parameter lLength of
             # the ABF synch section is expressed in samples (ticks) whereas
@@ -615,7 +597,7 @@ class Abf():
             h["dataPtsPerChan"] = h["dataPts"] / h["nADCNumChannels"]    
             if h["dataPts"] % h["nADCNumChannels"] > 0 or h["dataPtsPerChan"] % h["lActualEpisodes"] > 0:      #remainders   
                 fid.close()        
-                print 'number of data points not OK'        
+                return False, False
                 
             # temporary helper var
             dataPtsPerSweep = h["sweepLengthInPts"] * h["nADCNumChannels"]    
@@ -634,7 +616,6 @@ class Abf():
                     h["dataPtsPerChan"] = tmpd.size / h["nADCNumChannels"][0]  #one of the arguments is not list, address explicitly
                     if tmpd.size % h["nADCNumChannels"] > 0:                
                         fid.close()                
-                        print 'number of data points in episode not OK'                
                                 
                     # separate channels..
                     tmpd = tmpd.reshape((h["dataPtsPerChan"],h["nADCNumChannels"]))
@@ -654,7 +635,6 @@ class Abf():
                     d[:,:, i] = tmpd          
             
         elif h["nOperationMode"] == 3:    
-            print'data were acquired in gap-free mode'    
             # from start, stop, headOffset and h["fADCSampleInterval"] calculate first point to be read 
             #  and - unless stop is given as 'e' - number of points
             startPt = np.floor(1e6 * start * (1 / h["fADCSampleInterval"]))    
@@ -670,12 +650,10 @@ class Abf():
                 h["dataPts"] = h["dataPtsPerChan"] * h["nADCNumChannels"]        
                 if h["dataPts"] <= 0:            
                     fid.close()            
-                    print 'start is larger than or equal to stop'            
                         
                 
             if h["dataPts"] % h["nADCNumChannels"] > 0:        
                 fid.close()        
-                print 'number of data points not OK'        
                 
             tmp = 1e-6 * h["lActualAcqLength"] * h["fADCSampleInterval"]    
  #           if verbose:        
@@ -688,7 +666,6 @@ class Abf():
             h["recTime"] = np.hstack((h["recTime"], h["recTime"] + tmp))    
             if fid.seek((startPt * dataSz + headOffset)[0]) != 0:        
                 fid.close()        
-                print 'something went wrong positioning file pointer (too few data points ?)'
                 return [False, False]
                 
             if doLoadData:        
@@ -707,7 +684,6 @@ class Abf():
                     # jump to proper reading frame position in file
                     if fid.seek((chInd - 1) * dataSz) != 0:                
                         fid.close()                
-                        print 'something went wrong positioning file pointer (too few data points ?)'                
                     skip = dataSz * (h["nADCNumChannels"] - 1)
                     prec = precision + 'x'*skip #pad bytes
                     nbytes=struct.calcsize(prec)            
@@ -780,7 +756,6 @@ class Abf():
                         ch = recChIdx(chInd(j)) + 1                
                         d[:, j] = d[:, j] / (h["fInstrumentScaleFactor"][ch] * h["fSignalGain"][ch] * h["fADCProgrammableGain"][ch] * addGain[ch]) * h["fADCRange"] / h["lADCResolution"] + h["fInstrumentOffset"][ch] - h["fSignalOffset"][ch]                
         else:    
-            print'recording mode is \'high-speed oscilloscope\' which is not implemented -- returning empty matrix'    
             d = []    
             h["si"] = []    
         

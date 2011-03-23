@@ -1,0 +1,17 @@
+<div class="compatible-datasets" style="display: none;">
+  <p class="caption">
+    The following datasets are compatible with the selected source file. 
+    You can select one or many, in which the file will be loaded.
+  </p>
+  <p class="help">
+    Click to select. Ctrl-click (Cmd-click on Mac) to select many or unselect.
+  </p>
+  <ul class="compatible-datasets">
+    {% for dataset in datasets %}
+    <li class='' data-oid="{{ dataset.id }}"><span class="icon"></span>{{ dataset.name }}</li>
+    {% endfor %}
+  </ul>
+  
+  <button class="submit" href="#">Load</button>
+  <button class="cancel" href="#">Cancel</button>
+</div>

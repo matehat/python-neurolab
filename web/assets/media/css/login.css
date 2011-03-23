@@ -1,0 +1,39 @@
+header {
+  margin-top: 5em;
+  background-color: white;
+  padding: 2em 1.5em 1.5em 1.5em;
+  border-width: 1px 1px 0 1px;
+  border-style: solid;
+  border-color: #ddd;
+  border-radius: 12px 12px 0 0;
+}
+header h1, header h2 {
+  margin: 0;
+}
+form {
+  background-color: white;
+  padding: 1.5em;
+  border-radius: 0 0 12px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #eee #ddd #ddd #ddd;
+}
+form label {
+  font-size: 1.5em;
+  float: left;
+  display: block;
+  width: 100px;
+  color: #999;
+  margin-top: 1px;
+}
+form input.text, form input.password {
+  margin-top: 0px;
+  font-size: 1.5em;
+}
+form .button {
+  margin-top: 1em;
+}
+div.panel {
+  border-radius: 12px;
+  -webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,521 @@
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d876c8172b3b911a8000002
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d876c8172b3b911a8000001
+    Traceback (most recent call last):
+time.sleep(queue.time)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d876cca72b3b911ad000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87ccea72b3b91afb000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 22, in cleanup
+    worker.save()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/document.py", line 74, in save
+    signals.pre_save.send(sender=self.__class__, instance=self)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/pysignals-0.1.2-py2.7.egg/pysignals/dispatcher.py", line 193, in send
+    if not self.receivers:
+KeyboardInterrupt
+Error in sys.exitfunc:
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 22, in cleanup
+    worker.save()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/document.py", line 74, in save
+    signals.pre_save.send(sender=self.__class__, instance=self)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/pysignals-0.1.2-py2.7.egg/pysignals/dispatcher.py", line 193, in send
+    if not self.receivers:
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87cd8172b3b91b19000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87cd9072b3b91b23000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87d43172b3b91df5000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 22, in cleanup
+    worker.save()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/document.py", line 81, in save
+    collection = self.__class__.objects._collection
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/queryset.py", line 1151, in __get__
+    db = _get_db()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/connection.py", line 37, in _get_db
+    identity = get_identity()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/connection.py", line 59, in get_identity
+    identity = threading.current_thread().ident
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 809, in currentThread
+    return _DummyThread()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 783, in __init__
+    Thread.__init__(self, name=_newname("Dummy-%d"))
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 440, in __init__
+    self.__block = Condition(Lock())
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 176, in Condition
+    return _Condition(*args, **kwargs)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 192, in __init__
+    self._release_save = lock._release_save
+KeyboardInterrupt
+Error in sys.exitfunc:
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 22, in cleanup
+    worker.save()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/document.py", line 81, in save
+    collection = self.__class__.objects._collection
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/queryset.py", line 1151, in __get__
+    db = _get_db()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/connection.py", line 37, in _get_db
+    identity = get_identity()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/connection.py", line 59, in get_identity
+    identity = threading.current_thread().ident
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 809, in currentThread
+    return _DummyThread()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 783, in __init__
+    Thread.__init__(self, name=_newname("Dummy-%d"))
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 440, in __init__
+    self.__block = Condition(Lock())
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 176, in Condition
+    return _Condition(*args, **kwargs)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.py", line 192, in __init__
+    self._release_save = lock._release_save
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87d55172b3b91e3c000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Exception KeyboardInterrupt in <module 'threading' from '/usr/local/Cellar/python/2.7.1/lib/python2.7/threading.pyc'> ignored
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88a31072b3b90a7d000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88c9f472b3b90b6a000001
+Got a job: Job(id=4d88d66772b3b90d60000002)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88d73e72b3b90d72000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88d9e172b3b90dbe000001
+Got a job: Job(id=4d88d9df72b3b90d99000002)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Exception KeyboardInterrupt in <function remove at 0x103ab5e60> ignored
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88e0bc72b3b90e21000001
+Got a job: Job(id=4d88e0b872b3b90e1b000002)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d892ade72b3b9124c000001
+Got a job: Job(id=4d88e48572b3b90e9f000002)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 54, in <module>
+    job.handle_error(e, format_exc())
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/models.py", line 27, in handle_error
+    self.save()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/document.py", line 78, in save
+    doc = self.to_mongo()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/base.py", line 478, in to_mongo
+    data[field.db_field] = field.to_mongo(value)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/fields.py", line 467, in to_mongo
+    id_ = id_field.to_mongo(id_)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/base.py", line 128, in to_mongo
+    raise ValidationError(unicode(e))
+mongoengine.base.ValidationError: DBRef(u'task', ObjectId('4d88e48572b3b90e9f000001')) is not a valid ObjectId
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d892b5772b3b91259000001
+Got a job: Job(id=4d88e6f472b3b90ee8000002)
+(0, slice(0, 8192, None), slice(0, None, None)) (0, slice(0.0, 27306.666666666668, None))
+(0, slice(8192, 16384, None), slice(0, None, None)) (0, slice(27306.666666666668, 54613.333333333336, None))
+(0, slice(16384, 24576, None), slice(0, None, None)) (0, slice(54613.333333333336, 81920.0, None))
+(0, slice(24576, 32768, None), slice(0, None, None)) (0, slice(81920.0, 109226.66666666667, None))
+(0, slice(32768, 40960, None), slice(0, None, None)) (0, slice(109226.66666666667, 136533.33333333334, None))
+(0, slice(40960, 49152, None), slice(0, None, None)) (0, slice(136533.33333333334, 163840.0, None))
+(0, slice(49152, 57344, None), slice(0, None, None)) (0, slice(163840.0, 191146.66666666666, None))
+(0, slice(57344, 65536, None), slice(0, None, None)) (0, slice(191146.6666666667, 218453.33333333334, None))
+(0, slice(65536, 73728, None), slice(0, None, None)) (0, slice(218453.33333333334, 245760.0, None))
+(0, slice(73728, 81920, None), slice(0, None, None)) (0, slice(245760.0, 273066.6666666667, None))
+(0, slice(81920, 90112, None), slice(0, None, None)) (0, slice(273066.6666666667, 300373.3333333334, None))
+(0, slice(90112, 98304, None), slice(0, None, None)) (0, slice(300373.3333333334, 327680.00000000006, None))
+(0, slice(98304, 99178, None), slice(0, None, None)) (0, slice(327680.0, 330595.0, None))
+(1, slice(0, 8192, None), slice(0, None, None)) (1, slice(0.0, 27306.666666666668, None))
+(1, slice(8192, 16384, None), slice(0, None, None)) (1, slice(27306.666666666668, 54613.333333333336, None))
+(1, slice(16384, 24576, None), slice(0, None, None)) (1, slice(54613.333333333336, 81920.0, None))
+(1, slice(24576, 32768, None), slice(0, None, None)) (1, slice(81920.0, 109226.66666666667, None))
+(1, slice(32768, 40960, None), slice(0, None, None)) (1, slice(109226.66666666667, 136533.33333333334, None))
+(1, slice(40960, 49152, None), slice(0, None, None)) (1, slice(136533.33333333334, 163840.0, None))
+(1, slice(49152, 57344, None), slice(0, None, None)) (1, slice(163840.0, 191146.66666666666, None))
+(1, slice(57344, 65536, None), slice(0, None, None)) (1, slice(191146.6666666667, 218453.33333333334, None))
+(1, slice(65536, 73728, None), slice(0, None, None)) (1, slice(218453.33333333334, 245760.0, None))
+(1, slice(73728, 81920, None), slice(0, None, None)) (1, slice(245760.0, 273066.6666666667, None))
+(1, slice(81920, 90112, None), slice(0, None, None)) (1, slice(273066.6666666667, 300373.3333333334, None))
+(1, slice(90112, 98304, None), slice(0, None, None)) (1, slice(300373.3333333334, 327680.00000000006, None))
+(1, slice(98304, 99178, None), slice(0, None, None)) (1, slice(327680.0, 330595.0, None))
+(2, slice(0, 8192, None), slice(0, None, None)) (2, slice(0.0, 27306.666666666668, None))
+(2, slice(8192, 16384, None), slice(0, None, None)) (2, slice(27306.666666666668, 54613.333333333336, None))
+(2, slice(16384, 24576, None), slice(0, None, None)) (2, slice(54613.333333333336, 81920.0, None))
+(2, slice(24576, 32768, None), slice(0, None, None)) (2, slice(81920.0, 109226.66666666667, None))
+(2, slice(32768, 40960, None), slice(0, None, None)) (2, slice(109226.66666666667, 136533.33333333334, None))
+(2, slice(40960, 49152, None), slice(0, None, None)) (2, slice(136533.33333333334, 163840.0, None))
+(2, slice(49152, 57344, None), slice(0, None, None)) (2, slice(163840.0, 191146.66666666666, None))
+(2, slice(57344, 65536, None), slice(0, None, None)) (2, slice(191146.6666666667, 218453.33333333334, None))
+(2, slice(65536, 73728, None), slice(0, None, None)) (2, slice(218453.33333333334, 245760.0, None))
+(2, slice(73728, 81920, None), slice(0, None, None)) (2, slice(245760.0, 273066.6666666667, None))
+(2, slice(81920, 90112, None), slice(0, None, None)) (2, slice(273066.6666666667, 300373.3333333334, None))
+(2, slice(90112, 98304, None), slice(0, None, None)) (2, slice(300373.3333333334, 327680.00000000006, None))
+(2, slice(98304, 99178, None), slice(0, None, None)) (2, slice(327680.0, 330595.0, None))
+(3, slice(0, 8192, None), slice(0, None, None)) (3, slice(0.0, 27306.666666666668, None))
+(3, slice(8192, 16384, None), slice(0, None, None)) (3, slice(27306.666666666668, 54613.333333333336, None))
+(3, slice(16384, 24576, None), slice(0, None, None)) (3, slice(54613.333333333336, 81920.0, None))
+(3, slice(24576, 32768, None), slice(0, None, None)) (3, slice(81920.0, 109226.66666666667, None))
+(3, slice(32768, 40960, None), slice(0, None, None)) (3, slice(109226.66666666667, 136533.33333333334, None))
+(3, slice(40960, 49152, None), slice(0, None, None)) (3, slice(136533.33333333334, 163840.0, None))
+(3, slice(49152, 57344, None), slice(0, None, None)) (3, slice(163840.0, 191146.66666666666, None))
+(3, slice(57344, 65536, None), slice(0, None, None)) (3, slice(191146.6666666667, 218453.33333333334, None))
+(3, slice(65536, 73728, None), slice(0, None, None)) (3, slice(218453.33333333334, 245760.0, None))
+(3, slice(73728, 81920, None), slice(0, None, None)) (3, slice(245760.0, 273066.6666666667, None))
+(3, slice(81920, 90112, None), slice(0, None, None)) (3, slice(273066.6666666667, 300373.3333333334, None))
+(3, slice(90112, 98304, None), slice(0, None, None)) (3, slice(300373.3333333334, 327680.00000000006, None))
+(3, slice(98304, 99178, None), slice(0, None, None)) (3, slice(327680.0, 330595.0, None))
+(4, slice(0, 8192, None), slice(0, None, None)) (4, slice(0.0, 27306.666666666668, None))
+(4, slice(8192, 16384, None), slice(0, None, None)) (4, slice(27306.666666666668, 54613.333333333336, None))
+(4, slice(16384, 24576, None), slice(0, None, None)) (4, slice(54613.333333333336, 81920.0, None))
+(4, slice(24576, 32768, None), slice(0, None, None)) (4, slice(81920.0, 109226.66666666667, None))
+(4, slice(32768, 40960, None), slice(0, None, None)) (4, slice(109226.66666666667, 136533.33333333334, None))
+(4, slice(40960, 49152, None), slice(0, None, None)) (4, slice(136533.33333333334, 163840.0, None))
+(4, slice(49152, 57344, None), slice(0, None, None)) (4, slice(163840.0, 191146.66666666666, None))
+(4, slice(57344, 65536, None), slice(0, None, None)) (4, slice(191146.6666666667, 218453.33333333334, None))
+(4, slice(65536, 73728, None), slice(0, None, None)) (4, slice(218453.33333333334, 245760.0, None))
+(4, slice(73728, 81920, None), slice(0, None, None)) (4, slice(245760.0, 273066.6666666667, None))
+(4, slice(81920, 90112, None), slice(0, None, None)) (4, slice(273066.6666666667, 300373.3333333334, None))
+(4, slice(90112, 98304, None), slice(0, None, None)) (4, slice(300373.3333333334, 327680.00000000006, None))
+(4, slice(98304, 99178, None), slice(0, None, None)) (4, slice(327680.0, 330595.0, None))
+(5, slice(0, 8192, None), slice(0, None, None)) (5, slice(0.0, 27306.666666666668, None))
+(5, slice(8192, 16384, None), slice(0, None, None)) (5, slice(27306.666666666668, 54613.333333333336, None))
+(5, slice(16384, 24576, None), slice(0, None, None)) (5, slice(54613.333333333336, 81920.0, None))
+(5, slice(24576, 32768, None), slice(0, None, None)) (5, slice(81920.0, 109226.66666666667, None))
+(5, slice(32768, 40960, None), slice(0, None, None)) (5, slice(109226.66666666667, 136533.33333333334, None))
+(5, slice(40960, 49152, None), slice(0, None, None)) (5, slice(136533.33333333334, 163840.0, None))
+(5, slice(49152, 57344, None), slice(0, None, None)) (5, slice(163840.0, 191146.66666666666, None))
+(5, slice(57344, 65536, None), slice(0, None, None)) (5, slice(191146.6666666667, 218453.33333333334, None))
+(5, slice(65536, 73728, None), slice(0, None, None)) (5, slice(218453.33333333334, 245760.0, None))
+(5, slice(73728, 81920, None), slice(0, None, None)) (5, slice(245760.0, 273066.6666666667, None))
+(5, slice(81920, 90112, None), slice(0, None, None)) (5, slice(273066.6666666667, 300373.3333333334, None))
+(5, slice(90112, 98304, None), slice(0, None, None)) (5, slice(300373.3333333334, 327680.00000000006, None))
+(5, slice(98304, 99178, None), slice(0, None, None)) (5, slice(327680.0, 330595.0, None))
+(6, slice(0, 8192, None), slice(0, None, None)) (6, slice(0.0, 27306.666666666668, None))
+(6, slice(8192, 16384, None), slice(0, None, None)) (6, slice(27306.666666666668, 54613.333333333336, None))
+(6, slice(16384, 24576, None), slice(0, None, None)) (6, slice(54613.333333333336, 81920.0, None))
+(6, slice(24576, 32768, None), slice(0, None, None)) (6, slice(81920.0, 109226.66666666667, None))
+(6, slice(32768, 40960, None), slice(0, None, None)) (6, slice(109226.66666666667, 136533.33333333334, None))
+(6, slice(40960, 49152, None), slice(0, None, None)) (6, slice(136533.33333333334, 163840.0, None))
+(6, slice(49152, 57344, None), slice(0, None, None)) (6, slice(163840.0, 191146.66666666666, None))
+(6, slice(57344, 65536, None), slice(0, None, None)) (6, slice(191146.6666666667, 218453.33333333334, None))
+(6, slice(65536, 73728, None), slice(0, None, None)) (6, slice(218453.33333333334, 245760.0, None))
+(6, slice(73728, 81920, None), slice(0, None, None)) (6, slice(245760.0, 273066.6666666667, None))
+(6, slice(81920, 90112, None), slice(0, None, None)) (6, slice(273066.6666666667, 300373.3333333334, None))
+(6, slice(90112, 98304, None), slice(0, None, None)) (6, slice(300373.3333333334, 327680.00000000006, None))
+(6, slice(98304, 99178, None), slice(0, None, None)) (6, slice(327680.0, 330595.0, None))
+(7, slice(0, 8192, None), slice(0, None, None)) (7, slice(0.0, 27306.666666666668, None))
+(7, slice(8192, 16384, None), slice(0, None, None)) (7, slice(27306.666666666668, 54613.333333333336, None))
+(7, slice(16384, 24576, None), slice(0, None, None)) (7, slice(54613.333333333336, 81920.0, None))
+(7, slice(24576, 32768, None), slice(0, None, None)) (7, slice(81920.0, 109226.66666666667, None))
+(7, slice(32768, 40960, None), slice(0, None, None)) (7, slice(109226.66666666667, 136533.33333333334, None))
+(7, slice(40960, 49152, None), slice(0, None, None)) (7, slice(136533.33333333334, 163840.0, None))
+(7, slice(49152, 57344, None), slice(0, None, None)) (7, slice(163840.0, 191146.66666666666, None))
+(7, slice(57344, 65536, None), slice(0, None, None)) (7, slice(191146.6666666667, 218453.33333333334, None))
+(7, slice(65536, 73728, None), slice(0, None, None)) (7, slice(218453.33333333334, 245760.0, None))
+(7, slice(73728, 81920, None), slice(0, None, None)) (7, slice(245760.0, 273066.6666666667, None))
+(7, slice(81920, 90112, None), slice(0, None, None)) (7, slice(273066.6666666667, 300373.3333333334, None))
+(7, slice(90112, 98304, None), slice(0, None, None)) (7, slice(300373.3333333334, 327680.00000000006, None))
+(7, slice(98304, 99178, None), slice(0, None, None)) (7, slice(327680.0, 330595.0, None))
+(8, slice(0, 8192, None), slice(0, None, None)) (8, slice(0.0, 27306.666666666668, None))
+(8, slice(8192, 16384, None), slice(0, None, None)) (8, slice(27306.666666666668, 54613.333333333336, None))
+(8, slice(16384, 24576, None), slice(0, None, None)) (8, slice(54613.333333333336, 81920.0, None))
+(8, slice(24576, 32768, None), slice(0, None, None)) (8, slice(81920.0, 109226.66666666667, None))
+(8, slice(32768, 40960, None), slice(0, None, None)) (8, slice(109226.66666666667, 136533.33333333334, None))
+(8, slice(40960, 49152, None), slice(0, None, None)) (8, slice(136533.33333333334, 163840.0, None))
+(8, slice(49152, 57344, None), slice(0, None, None)) (8, slice(163840.0, 191146.66666666666, None))
+(8, slice(57344, 65536, None), slice(0, None, None)) (8, slice(191146.6666666667, 218453.33333333334, None))
+(8, slice(65536, 73728, None), slice(0, None, None)) (8, slice(218453.33333333334, 245760.0, None))
+(8, slice(73728, 81920, None), slice(0, None, None)) (8, slice(245760.0, 273066.6666666667, None))
+(8, slice(81920, 90112, None), slice(0, None, None)) (8, slice(273066.6666666667, 300373.3333333334, None))
+(8, slice(90112, 98304, None), slice(0, None, None)) (8, slice(300373.3333333334, 327680.00000000006, None))
+(8, slice(98304, 99178, None), slice(0, None, None)) (8, slice(327680.0, 330595.0, None))
+(9, slice(0, 8192, None), slice(0, None, None)) (9, slice(0.0, 27306.666666666668, None))
+(9, slice(8192, 16384, None), slice(0, None, None)) (9, slice(27306.666666666668, 54613.333333333336, None))
+(9, slice(16384, 24576, None), slice(0, None, None)) (9, slice(54613.333333333336, 81920.0, None))
+(9, slice(24576, 32768, None), slice(0, None, None)) (9, slice(81920.0, 109226.66666666667, None))
+(9, slice(32768, 40960, None), slice(0, None, None)) (9, slice(109226.66666666667, 136533.33333333334, None))
+(9, slice(40960, 49152, None), slice(0, None, None)) (9, slice(136533.33333333334, 163840.0, None))
+(9, slice(49152, 57344, None), slice(0, None, None)) (9, slice(163840.0, 191146.66666666666, None))
+(9, slice(57344, 65536, None), slice(0, None, None)) (9, slice(191146.6666666667, 218453.33333333334, None))
+(9, slice(65536, 73728, None), slice(0, None, None)) (9, slice(218453.33333333334, 245760.0, None))
+(9, slice(73728, 81920, None), slice(0, None, None)) (9, slice(245760.0, 273066.6666666667, None))
+(9, slice(81920, 90112, None), slice(0, None, None)) (9, slice(273066.6666666667, 300373.3333333334, None))
+(9, slice(90112, 98304, None), slice(0, None, None)) (9, slice(300373.3333333334, 327680.00000000006, None))
+(9, slice(98304, 99178, None), slice(0, None, None)) (9, slice(327680.0, 330595.0, None))
+(10, slice(0, 8192, None), slice(0, None, None)) (10, slice(0.0, 27306.666666666668, None))
+(10, slice(8192, 16384, None), slice(0, None, None)) (10, slice(27306.666666666668, 54613.333333333336, None))
+(10, slice(16384, 24576, None), slice(0, None, None)) (10, slice(54613.333333333336, 81920.0, None))
+(10, slice(24576, 32768, None), slice(0, None, None)) (10, slice(81920.0, 109226.66666666667, None))
+(10, slice(32768, 40960, None), slice(0, None, None)) (10, slice(109226.66666666667, 136533.33333333334, None))
+(10, slice(40960, 49152, None), slice(0, None, None)) (10, slice(136533.33333333334, 163840.0, None))
+(10, slice(49152, 57344, None), slice(0, None, None)) (10, slice(163840.0, 191146.66666666666, None))
+(10, slice(57344, 65536, None), slice(0, None, None)) (10, slice(191146.6666666667, 218453.33333333334, None))
+(10, slice(65536, 73728, None), slice(0, None, None)) (10, slice(218453.33333333334, 245760.0, None))
+(10, slice(73728, 81920, None), slice(0, None, None)) (10, slice(245760.0, 273066.6666666667, None))
+(10, slice(81920, 90112, None), slice(0, None, None)) (10, slice(273066.6666666667, 300373.3333333334, None))
+(10, slice(90112, 98304, None), slice(0, None, None)) (10, slice(300373.3333333334, 327680.00000000006, None))
+(10, slice(98304, 99178, None), slice(0, None, None)) (10, slice(327680.0, 330595.0, None))
+(11, slice(0, 8192, None), slice(0, None, None)) (11, slice(0.0, 27306.666666666668, None))
+(11, slice(8192, 16384, None), slice(0, None, None)) (11, slice(27306.666666666668, 54613.333333333336, None))
+(11, slice(16384, 24576, None), slice(0, None, None)) (11, slice(54613.333333333336, 81920.0, None))
+(11, slice(24576, 32768, None), slice(0, None, None)) (11, slice(81920.0, 109226.66666666667, None))
+(11, slice(32768, 40960, None), slice(0, None, None)) (11, slice(109226.66666666667, 136533.33333333334, None))
+(11, slice(40960, 49152, None), slice(0, None, None)) (11, slice(136533.33333333334, 163840.0, None))
+(11, slice(49152, 57344, None), slice(0, None, None)) (11, slice(163840.0, 191146.66666666666, None))
+(11, slice(57344, 65536, None), slice(0, None, None)) (11, slice(191146.6666666667, 218453.33333333334, None))
+(11, slice(65536, 73728, None), slice(0, None, None)) (11, slice(218453.33333333334, 245760.0, None))
+(11, slice(73728, 81920, None), slice(0, None, None)) (11, slice(245760.0, 273066.6666666667, None))
+(11, slice(81920, 90112, None), slice(0, None, None)) (11, slice(273066.6666666667, 300373.3333333334, None))
+(11, slice(90112, 98304, None), slice(0, None, None)) (11, slice(300373.3333333334, 327680.00000000006, None))
+(11, slice(98304, 99178, None), slice(0, None, None)) (11, slice(327680.0, 330595.0, None))
+(12, slice(0, 8192, None), slice(0, None, None)) (12, slice(0.0, 27306.666666666668, None))
+(12, slice(8192, 16384, None), slice(0, None, None)) (12, slice(27306.666666666668, 54613.333333333336, None))
+(12, slice(16384, 24576, None), slice(0, None, None)) (12, slice(54613.333333333336, 81920.0, None))
+(12, slice(24576, 32768, None), slice(0, None, None)) (12, slice(81920.0, 109226.66666666667, None))
+(12, slice(32768, 40960, None), slice(0, None, None)) (12, slice(109226.66666666667, 136533.33333333334, None))
+(12, slice(40960, 49152, None), slice(0, None, None)) (12, slice(136533.33333333334, 163840.0, None))
+(12, slice(49152, 57344, None), slice(0, None, None)) (12, slice(163840.0, 191146.66666666666, None))
+(12, slice(57344, 65536, None), slice(0, None, None)) (12, slice(191146.6666666667, 218453.33333333334, None))
+(12, slice(65536, 73728, None), slice(0, None, None)) (12, slice(218453.33333333334, 245760.0, None))
+(12, slice(73728, 81920, None), slice(0, None, None)) (12, slice(245760.0, 273066.6666666667, None))
+(12, slice(81920, 90112, None), slice(0, None, None)) (12, slice(273066.6666666667, 300373.3333333334, None))
+(12, slice(90112, 98304, None), slice(0, None, None)) (12, slice(300373.3333333334, 327680.00000000006, None))
+(12, slice(98304, 99178, None), slice(0, None, None)) (12, slice(327680.0, 330595.0, None))
+(13, slice(0, 8192, None), slice(0, None, None)) (13, slice(0.0, 27306.666666666668, None))
+(13, slice(8192, 16384, None), slice(0, None, None)) (13, slice(27306.666666666668, 54613.333333333336, None))
+(13, slice(16384, 24576, None), slice(0, None, None)) (13, slice(54613.333333333336, 81920.0, None))
+(13, slice(24576, 32768, None), slice(0, None, None)) (13, slice(81920.0, 109226.66666666667, None))
+(13, slice(32768, 40960, None), slice(0, None, None)) (13, slice(109226.66666666667, 136533.33333333334, None))
+(13, slice(40960, 49152, None), slice(0, None, None)) (13, slice(136533.33333333334, 163840.0, None))
+(13, slice(49152, 57344, None), slice(0, None, None)) (13, slice(163840.0, 191146.66666666666, None))
+(13, slice(57344, 65536, None), slice(0, None, None)) (13, slice(191146.6666666667, 218453.33333333334, None))
+(13, slice(65536, 73728, None), slice(0, None, None)) (13, slice(218453.33333333334, 245760.0, None))
+(13, slice(73728, 81920, None), slice(0, None, None)) (13, slice(245760.0, 273066.6666666667, None))
+(13, slice(81920, 90112, None), slice(0, None, None)) (13, slice(273066.6666666667, 300373.3333333334, None))
+(13, slice(90112, 98304, None), slice(0, None, None)) (13, slice(300373.3333333334, 327680.00000000006, None))
+(13, slice(98304, 99178, None), slice(0, None, None)) (13, slice(327680.0, 330595.0, None))
+(14, slice(0, 8192, None), slice(0, None, None)) (14, slice(0.0, 27306.666666666668, None))
+(14, slice(8192, 16384, None), slice(0, None, None)) (14, slice(27306.666666666668, 54613.333333333336, None))
+(14, slice(16384, 24576, None), slice(0, None, None)) (14, slice(54613.333333333336, 81920.0, None))
+(14, slice(24576, 32768, None), slice(0, None, None)) (14, slice(81920.0, 109226.66666666667, None))
+(14, slice(32768, 40960, None), slice(0, None, None)) (14, slice(109226.66666666667, 136533.33333333334, None))
+(14, slice(40960, 49152, None), slice(0, None, None)) (14, slice(136533.33333333334, 163840.0, None))
+(14, slice(49152, 57344, None), slice(0, None, None)) (14, slice(163840.0, 191146.66666666666, None))
+(14, slice(57344, 65536, None), slice(0, None, None)) (14, slice(191146.6666666667, 218453.33333333334, None))
+(14, slice(65536, 73728, None), slice(0, None, None)) (14, slice(218453.33333333334, 245760.0, None))
+(14, slice(73728, 81920, None), slice(0, None, None)) (14, slice(245760.0, 273066.6666666667, None))
+(14, slice(81920, 90112, None), slice(0, None, None)) (14, slice(273066.6666666667, 300373.3333333334, None))
+(14, slice(90112, 98304, None), slice(0, None, None)) (14, slice(300373.3333333334, 327680.00000000006, None))
+(14, slice(98304, 99178, None), slice(0, None, None)) (14, slice(327680.0, 330595.0, None))
+(15, slice(0, 8192, None), slice(0, None, None)) (15, slice(0.0, 27306.666666666668, None))
+(15, slice(8192, 16384, None), slice(0, None, None)) (15, slice(27306.666666666668, 54613.333333333336, None))
+(15, slice(16384, 24576, None), slice(0, None, None)) (15, slice(54613.333333333336, 81920.0, None))
+(15, slice(24576, 32768, None), slice(0, None, None)) (15, slice(81920.0, 109226.66666666667, None))
+(15, slice(32768, 40960, None), slice(0, None, None)) (15, slice(109226.66666666667, 136533.33333333334, None))
+(15, slice(40960, 49152, None), slice(0, None, None)) (15, slice(136533.33333333334, 163840.0, None))
+(15, slice(49152, 57344, None), slice(0, None, None)) (15, slice(163840.0, 191146.66666666666, None))
+(15, slice(57344, 65536, None), slice(0, None, None)) (15, slice(191146.6666666667, 218453.33333333334, None))
+(15, slice(65536, 73728, None), slice(0, None, None)) (15, slice(218453.33333333334, 245760.0, None))
+(15, slice(73728, 81920, None), slice(0, None, None)) (15, slice(245760.0, 273066.6666666667, None))
+(15, slice(81920, 90112, None), slice(0, None, None)) (15, slice(273066.6666666667, 300373.3333333334, None))
+(15, slice(90112, 98304, None), slice(0, None, None)) (15, slice(300373.3333333334, 327680.00000000006, None))
+(15, slice(98304, 99178, None), slice(0, None, None)) (15, slice(327680.0, 330595.0, None))
+Got a job: Job(id=4d892ed972b3b9129b000002)
+Got a job: Job(id=4d892ed972b3b9129b000008)
+Got a job: Job(id=4d892f3672b3b9129b00000e)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Exception KeyboardInterrupt in 'h5py.h5e.err_callback' ignored
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89319f72b3b912c4000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d8931d172b3b912c9000001
+Got a job: Job(id=4d88e48572b3b90e9f000002)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 54, in <module>
+    job.handle_error(e, format_exc())
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/models.py", line 27, in handle_error
+    self.save()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/document.py", line 78, in save
+    doc = self.to_mongo()
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/base.py", line 478, in to_mongo
+    data[field.db_field] = field.to_mongo(value)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/fields.py", line 467, in to_mongo
+    id_ = id_field.to_mongo(id_)
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/site-packages/mongoengine-0.4-py2.7.egg/mongoengine/base.py", line 128, in to_mongo
+    raise ValidationError(unicode(e))
+mongoengine.base.ValidationError: DBRef(u'task', ObjectId('4d88e48572b3b90e9f000001')) is not a valid ObjectId
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89323972b3b912d4000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89326072b3b912dd000001
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89814ed6faf81507000001
+Got a job: Job(id=4d89813ed6faf814dd000006)
+(0, slice(0, 8192, None), slice(0, None, None)) (0, slice(0.0, 27306.666666666668, None))
+(0, slice(8192, 16384, None), slice(0, None, None)) (0, slice(27306.666666666668, 54613.333333333336, None))
+(0, slice(16384, 24576, None), slice(0, None, None)) (0, slice(54613.333333333336, 81920.0, None))
+(0, slice(24576, 32768, None), slice(0, None, None)) (0, slice(81920.0, 109226.66666666667, None))
+(0, slice(32768, 36565, None), slice(0, None, None)) (0, slice(109226.66666666667, 121886.0, None))
+(1, slice(0, 8192, None), slice(0, None, None)) (1, slice(0.0, 27306.666666666668, None))
+(1, slice(8192, 16384, None), slice(0, None, None)) (1, slice(27306.666666666668, 54613.333333333336, None))
+(1, slice(16384, 24576, None), slice(0, None, None)) (1, slice(54613.333333333336, 81920.0, None))
+(1, slice(24576, 32768, None), slice(0, None, None)) (1, slice(81920.0, 109226.66666666667, None))
+(1, slice(32768, 36565, None), slice(0, None, None)) (1, slice(109226.66666666667, 121886.0, None))
+(2, slice(0, 8192, None), slice(0, None, None)) (2, slice(0.0, 27306.666666666668, None))
+(2, slice(8192, 16384, None), slice(0, None, None)) (2, slice(27306.666666666668, 54613.333333333336, None))
+(2, slice(16384, 24576, None), slice(0, None, None)) (2, slice(54613.333333333336, 81920.0, None))
+(2, slice(24576, 32768, None), slice(0, None, None)) (2, slice(81920.0, 109226.66666666667, None))
+(2, slice(32768, 36565, None), slice(0, None, None)) (2, slice(109226.66666666667, 121886.0, None))
+(3, slice(0, 8192, None), slice(0, None, None)) (3, slice(0.0, 27306.666666666668, None))
+(3, slice(8192, 16384, None), slice(0, None, None)) (3, slice(27306.666666666668, 54613.333333333336, None))
+(3, slice(16384, 24576, None), slice(0, None, None)) (3, slice(54613.333333333336, 81920.0, None))
+(3, slice(24576, 32768, None), slice(0, None, None)) (3, slice(81920.0, 109226.66666666667, None))
+(3, slice(32768, 36565, None), slice(0, None, None)) (3, slice(109226.66666666667, 121886.0, None))
+(4, slice(0, 8192, None), slice(0, None, None)) (4, slice(0.0, 27306.666666666668, None))
+(4, slice(8192, 16384, None), slice(0, None, None)) (4, slice(27306.666666666668, 54613.333333333336, None))
+(4, slice(16384, 24576, None), slice(0, None, None)) (4, slice(54613.333333333336, 81920.0, None))
+(4, slice(24576, 32768, None), slice(0, None, None)) (4, slice(81920.0, 109226.66666666667, None))
+(4, slice(32768, 36565, None), slice(0, None, None)) (4, slice(109226.66666666667, 121886.0, None))
+(5, slice(0, 8192, None), slice(0, None, None)) (5, slice(0.0, 27306.666666666668, None))
+(5, slice(8192, 16384, None), slice(0, None, None)) (5, slice(27306.666666666668, 54613.333333333336, None))
+(5, slice(16384, 24576, None), slice(0, None, None)) (5, slice(54613.333333333336, 81920.0, None))
+(5, slice(24576, 32768, None), slice(0, None, None)) (5, slice(81920.0, 109226.66666666667, None))
+(5, slice(32768, 36565, None), slice(0, None, None)) (5, slice(109226.66666666667, 121886.0, None))
+(6, slice(0, 8192, None), slice(0, None, None)) (6, slice(0.0, 27306.666666666668, None))
+(6, slice(8192, 16384, None), slice(0, None, None)) (6, slice(27306.666666666668, 54613.333333333336, None))
+(6, slice(16384, 24576, None), slice(0, None, None)) (6, slice(54613.333333333336, 81920.0, None))
+(6, slice(24576, 32768, None), slice(0, None, None)) (6, slice(81920.0, 109226.66666666667, None))
+(6, slice(32768, 36565, None), slice(0, None, None)) (6, slice(109226.66666666667, 121886.0, None))
+(7, slice(0, 8192, None), slice(0, None, None)) (7, slice(0.0, 27306.666666666668, None))
+(7, slice(8192, 16384, None), slice(0, None, None)) (7, slice(27306.666666666668, 54613.333333333336, None))
+(7, slice(16384, 24576, None), slice(0, None, None)) (7, slice(54613.333333333336, 81920.0, None))
+(7, slice(24576, 32768, None), slice(0, None, None)) (7, slice(81920.0, 109226.66666666667, None))
+(7, slice(32768, 36565, None), slice(0, None, None)) (7, slice(109226.66666666667, 121886.0, None))
+(8, slice(0, 8192, None), slice(0, None, None)) (8, slice(0.0, 27306.666666666668, None))
+(8, slice(8192, 16384, None), slice(0, None, None)) (8, slice(27306.666666666668, 54613.333333333336, None))
+(8, slice(16384, 24576, None), slice(0, None, None)) (8, slice(54613.333333333336, 81920.0, None))
+(8, slice(24576, 32768, None), slice(0, None, None)) (8, slice(81920.0, 109226.66666666667, None))
+(8, slice(32768, 36565, None), slice(0, None, None)) (8, slice(109226.66666666667, 121886.0, None))
+(9, slice(0, 8192, None), slice(0, None, None)) (9, slice(0.0, 27306.666666666668, None))
+(9, slice(8192, 16384, None), slice(0, None, None)) (9, slice(27306.666666666668, 54613.333333333336, None))
+(9, slice(16384, 24576, None), slice(0, None, None)) (9, slice(54613.333333333336, 81920.0, None))
+(9, slice(24576, 32768, None), slice(0, None, None)) (9, slice(81920.0, 109226.66666666667, None))
+(9, slice(32768, 36565, None), slice(0, None, None)) (9, slice(109226.66666666667, 121886.0, None))
+(10, slice(0, 8192, None), slice(0, None, None)) (10, slice(0.0, 27306.666666666668, None))
+(10, slice(8192, 16384, None), slice(0, None, None)) (10, slice(27306.666666666668, 54613.333333333336, None))
+(10, slice(16384, 24576, None), slice(0, None, None)) (10, slice(54613.333333333336, 81920.0, None))
+(10, slice(24576, 32768, None), slice(0, None, None)) (10, slice(81920.0, 109226.66666666667, None))
+(10, slice(32768, 36565, None), slice(0, None, None)) (10, slice(109226.66666666667, 121886.0, None))
+(11, slice(0, 8192, None), slice(0, None, None)) (11, slice(0.0, 27306.666666666668, None))
+(11, slice(8192, 16384, None), slice(0, None, None)) (11, slice(27306.666666666668, 54613.333333333336, None))
+(11, slice(16384, 24576, None), slice(0, None, None)) (11, slice(54613.333333333336, 81920.0, None))
+(11, slice(24576, 32768, None), slice(0, None, None)) (11, slice(81920.0, 109226.66666666667, None))
+(11, slice(32768, 36565, None), slice(0, None, None)) (11, slice(109226.66666666667, 121886.0, None))
+(12, slice(0, 8192, None), slice(0, None, None)) (12, slice(0.0, 27306.666666666668, None))
+(12, slice(8192, 16384, None), slice(0, None, None)) (12, slice(27306.666666666668, 54613.333333333336, None))
+(12, slice(16384, 24576, None), slice(0, None, None)) (12, slice(54613.333333333336, 81920.0, None))
+(12, slice(24576, 32768, None), slice(0, None, None)) (12, slice(81920.0, 109226.66666666667, None))
+(12, slice(32768, 36565, None), slice(0, None, None)) (12, slice(109226.66666666667, 121886.0, None))
+(13, slice(0, 8192, None), slice(0, None, None)) (13, slice(0.0, 27306.666666666668, None))
+(13, slice(8192, 16384, None), slice(0, None, None)) (13, slice(27306.666666666668, 54613.333333333336, None))
+(13, slice(16384, 24576, None), slice(0, None, None)) (13, slice(54613.333333333336, 81920.0, None))
+(13, slice(24576, 32768, None), slice(0, None, None)) (13, slice(81920.0, 109226.66666666667, None))
+(13, slice(32768, 36565, None), slice(0, None, None)) (13, slice(109226.66666666667, 121886.0, None))
+(14, slice(0, 8192, None), slice(0, None, None)) (14, slice(0.0, 27306.666666666668, None))
+(14, slice(8192, 16384, None), slice(0, None, None)) (14, slice(27306.666666666668, 54613.333333333336, None))
+(14, slice(16384, 24576, None), slice(0, None, None)) (14, slice(54613.333333333336, 81920.0, None))
+(14, slice(24576, 32768, None), slice(0, None, None)) (14, slice(81920.0, 109226.66666666667, None))
+(14, slice(32768, 36565, None), slice(0, None, None)) (14, slice(109226.66666666667, 121886.0, None))
+(15, slice(0, 8192, None), slice(0, None, None)) (15, slice(0.0, 27306.666666666668, None))
+(15, slice(8192, 16384, None), slice(0, None, None)) (15, slice(27306.666666666668, 54613.333333333336, None))
+(15, slice(16384, 24576, None), slice(0, None, None)) (15, slice(54613.333333333336, 81920.0, None))
+(15, slice(24576, 32768, None), slice(0, None, None)) (15, slice(81920.0, 109226.66666666667, None))
+(15, slice(32768, 36565, None), slice(0, None, None)) (15, slice(109226.66666666667, 121886.0, None))
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d898690d6faf815af000001
+Got a job: Job(id=4d89868dd6faf815aa000002)
+Got a job: Job(id=4d89868dd6faf815aa000005)
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+

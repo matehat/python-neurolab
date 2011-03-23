@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+import subprocess, signal, os, sys
+from os.path import join, abspath, exists, split
+
+# Probing setup
+
+_bin = split(abspath(__file__))[0]
+
+if 'NEUROPY_PATH' in os.environ:
+    basedir = os.environ['NEUROPY_PATH']
+else:
+    basedir = split(_bin)[0]
+
+if basedir not in sys.path:
+    sys.path.append(basedir)
+
+try:
+    import config
+except ImportError:
+    print "Could not import "
+
+if 'NEUROPY_DB_PATH' in os.environ:
+    dbdir = os.environ['NEUROPY_DB_PATH']
+else:
+    dbdir = join(basedir, 'db')
+
+outp = open(join(basedir, 'log/httpd.log'), 'a')
+
+if config.DEBUG:
+    # Start django development server process
+    p = subprocess.Popen(['/usr/bin/env', 'python',
+            join(basedir, 'web/manage.py'),
+            'runserver', config.HTTP_ADDRESS,
+        ],
+        stderr=outp, stdout=outp)
+else:
+    # Start gunicorn server process
+    p = subprocess.Popen(['/usr/bin/env', 'python',
+            join(basedir, 'web/manage.py'),
+            'run_gunicorn',
+            '-w', str(config.HTTP_WORKERS),
+            '-b', config.HTTP_ADDRESS,
+        ],
+        stderr=outp, stdout=outp)
+
+def handle(sig, frame):
+    p.send_signal(sig)
+    outp.close()
+
+for sig in ('SIGHUP', 'SIGINT', 'SIGABRT',
+            'SIGQUIT', 'SIGTERM', 'SIGTSTP'):
+    try:
+        signal.signal(getattr(signal, sig), handle)
+    except ValueError: # Handle windows ignorance of some signals
+        continue
+
+p.wait()

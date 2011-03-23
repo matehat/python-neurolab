@@ -16,11 +16,10 @@ if BASE not in sys.path:
     
 DEBUG = True
 
-ASSETS = join(BASE, 'assets')
+ASSETS = join(BASE, 'web/assets')
 MEDIA = join(ASSETS, 'media/')
 TEMPLATES = {
-    'DJANGO': join(ASSETS, 'django'),
-    'MUSTACHE': join(ASSETS, 'mustache'),
+    'DJANGO': join(ASSETS, 'templates'),
 }
 
 MONGO_PORT = 8001
@@ -31,21 +30,26 @@ QUEUES = {
         'workers': 1,
         'time': 1.0
     },
-    'data': {
+    'processing': {
         'workers': 2,
         'time': 0.5,
     },
     'files': {
-        'workers': 2,
+        'workers': 1,
         'time': 1.0,
     }
 }
 
-HTTP_WORKERS = 1
+HTTP_WORKERS = 2
 HTTP_ADDRESS = '127.0.0.1:4000'
 
 MEDIA_URL = '/media/'
-FILEFORMATS = ('tuckerdavis', 'matlab', 'hierarchicaldata', 'axon')
-TASKS = ('extraction', 'signal')
+
+CHUNKSIZES = {
+    'read': 20*(2**20),
+    'fft': 2**13
+}
+FILEFORMATS = ('tuckerdavis', 'axon')
+TASKS = ('waves', 'fft', 'scalogram')
 
 SECRET_KEY = 's6@q_@#++)ubmx04x+rs_j^f4ywnz1c0-)1r&a97v))l1n14tg'

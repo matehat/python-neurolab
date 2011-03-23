@@ -1,0 +1,15 @@
+<div class="file" data-oid="{{ file.id }}">
+  <h4 class="details">File Details</h4>
+  <dl class="body details">
+    <dt>Path</dt>
+    <dd class="{% if not file.available %}unavailable{% else %}available{% endif %}">{{ file.path }}</dd>
+    {% for item in file.file_data.iteritems %}
+      <dt>{{ item.0 }}</dt>
+      <dd>{{ item.1 }}</dd>
+    {% endfor %}
+  </dl>
+  
+ <div class="deferred file">
+  <strong>Loading File Structure</strong>
+ </div>
+</div>

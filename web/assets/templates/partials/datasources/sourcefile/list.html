@@ -1,0 +1,17 @@
+{% load datasources %}
+<div class="files">
+  {% if datasource.files %}
+    {{ datasource|filetree }}
+    <div class="file-details">
+      <div class="empty">
+        <strong>Select a file from the list on the left.</strong><br />
+        After selecting a file, you will see its details here, and you will be able to import it into a dataset.
+      </div>
+    </div>
+  {% else %}
+    <div class="empty">
+      <strong>No file is included in this datasource just yet.</strong><br />
+              You can parse the datasource for new files or create new through the use of tasks.
+    </div>
+  {% endif %}
+</div>

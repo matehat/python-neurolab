@@ -1,0 +1,26 @@
+<li class="datasource" id="datasource-{{ datasource.id }}" data-oid="{{ datasource.id }}">
+  <h2 style="display: none;">{{ datasource.name }}</h2>
+  <div class="controls">
+    <a class="refresh" href="#">Refresh</a>
+    <a class="modify" href="#">Modify</a>
+    <a class="delete" href="#">Delete</a>
+  </div>
+  <h3>Details</h3>
+  <dl class="description">
+    <dt>Root</dt>
+    <dd class="{% if not datasource.available %}unavailable{% else %}available{% endif %}">{{ datasource.root }}</dd>
+    
+    {% if not datasource.pathlevels|length_is:"0" %}
+    <dt>Levels</dt>
+    <dd>
+      {% for lvl in datasource.pathlevels %}
+        {{ lvl }}<br />
+      {% endfor %}
+    </dd>
+    {% endif %}
+  </dl>
+  <h3>Files</h3>
+  <div class="files deferred">
+    <strong>Detecting and loading source files</strong>
+  </div>
+</li>

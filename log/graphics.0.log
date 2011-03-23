@@ -1,0 +1,134 @@
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d876c8172b3b911a8000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d876cca72b3b911ad000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87ccea72b3b91afb000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 22, in cleanup
+    worker.save()
+KeyboardInterrupt
+Error in sys.exitfunc:
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python/2.7.1/lib/python2.7/atexit.py", line 24, in _run_exitfuncs
+    func(*targs, **kargs)
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 22, in cleanup
+    worker.save()
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87cd8172b3b91b19000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87cd9072b3b91b23000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87d43172b3b91df5000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d87d55172b3b91e3c000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/neurolab/tasks/worker.py", line 56, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88a31072b3b90a7d000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88c9f472b3b90b6a000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88d73e72b3b90d72000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88d9e172b3b90dbe000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d88e0bc72b3b90e21000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d892ade72b3b9124c000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d892b5772b3b91259000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89319f72b3b912c4000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d8931d172b3b912c9000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89323972b3b912d4000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89326072b3b912dd000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d89814ed6faf81507000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+KeyboardInterrupt
+Watching job queue (neurolab.job) for jobs to consume
+Worker ID : 4d898690d6faf815af000000
+Traceback (most recent call last):
+  File "/Users/mathieudamours/Laboratoire/NeuroLab/bin/worker", line 58, in <module>
+    time.sleep(queue.time)
+

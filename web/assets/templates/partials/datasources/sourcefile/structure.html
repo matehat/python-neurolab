@@ -1,0 +1,39 @@
+{% if infos %}
+<div class="file-structure">
+  
+  <dl class="body structure">
+      <dt class="time">Start Time</dt>
+      <dd>{{ infos.starttime }}</dd>
+  
+      <dt class="length">Length</dt>
+      <dd>{{ infos.length }} (s)</dd>
+  </dl>
+  
+  <h4>Components</h4>
+  <ul class="components">
+    {% for name,component in infos.components.iteritems %}
+    <li class="cmp">
+      <span class="cmp-name">
+        <span class="icon"></span>
+        {{ name }}
+      </span>
+      <dl class="details">
+        {% for k,v in component.iteritems %}
+        <dt>{{ k }}</dt><dd>{{ v }}</dd>
+        {% endfor %}
+      </dl>
+    </li>
+    {% endfor %}
+  </ul>
+  
+  <div class="file-controls">
+    {% if datasets %}<a class="load" href="#">Load</a>{% endif %}
+    <a class="new-dataset" href="#">Create Dataset</a>
+  </div>
+</div>
+{% else %}
+<div class="empty">
+  <strong>No structure could be read from the source file.</strong><br />
+  The file could be corrupted or unreadable, given the specified file format for the datasource.
+</div>
+{% endif %}

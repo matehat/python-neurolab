@@ -1,0 +1,31 @@
+<form action="" method="" class="dataset-form">
+  {% if dataset %}
+    <div style="display: none;"><input type="hidden" name="id" value="{{ dataset.id }}" id=""></div>
+  {% endif %}
+  
+  <fieldset>
+    {% for field in form %}
+    <div class="field {{ field.name }}">
+      {{ field.errors }}
+      {{ field.label_tag }}<br />
+      {{ field }}
+    </div>
+    {% endfor %}
+    
+    {% if components %}
+    <label for="components">Included Components</label>
+    <div style="display: none;"><input type="hidden" name="file" value="{{ file.id }}" id=""></div>
+    <ul class="components">
+      {% for comp in components %}
+      <li>
+        <input type="checkbox" checked="1" name="components" value="{{ comp }}" id="">
+        <span class="component-name">{{ comp }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </fieldset>
+  
+  <button class="submit">{% if dataset %}Update{% else %}Create{% endif %}</button>
+  <button class="cancel">Cancel</button>
+</form>

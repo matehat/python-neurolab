@@ -2,7 +2,8 @@ import struct, sys, time, os
 from datetime import datetime
 from collections import namedtuple
 
-from neurolab.formats.base import BaseFormat
+import config
+from neurolab.formats.base import Format
 
 try:
     from collections import OrderedDict
@@ -12,47 +13,57 @@ except ImportError:
 import numpy
 from numpy.core.records import fromfile, fromarrays
 
-class TDTFormat(BaseFormat):
+class TDTFormat(Format):
     slug = 'tucker-davis'
-    writable = False
+    name = 'Tucker-Davis'
     
     def __init__(self, sourcefile):
         super(TDTFormat, self).__init__(sourcefile)
         self.block = Block(path=sourcefile.fullpath)
     
     
-    def metadata(self):
+    def get_infos(self):
+        _len = float(self.block.length.seconds + self.block.length.microseconds*1e-6)
+        components = {
+            grp.code: {
+                'type': 'wave-group',
+                'name': str(grp.code),
+                'sampling_rate': float(grp.totalsize)/_len,
+                'count': len(grp.channels),
+                'size': float(grp.totalsize),
+                'dtype': str(grp.dtype.name)
+            }
+            for grp in self.block.groups
+        }
+        
         return {
-            'recording_time': self.block.starttime,
-            'waves': {
-                ch.name: {
-                    'sampling_rate':    float(ch.sampling_rate),
-                }
-                for ch in self.block.channels
-            },
-            'groups': {
-                grp.code: {
-                    'sampling_rate':    float(grp.sampling_rate),
-                    'waves':         [ch.name for ch in grp.channels],
-                }
-                for grp in self.block.groups
-            },
-            'length': float(self.block.length.seconds + self.block.length.microseconds*1e-6)
+            'starttime': self.block.starttime,
+            'length': _len,
+            'components': components,
         }
     
-    def read_dataset(self, waves, starttime=0, endttime=None):
-        dataset = {}
-        for channel in waves:
-            dataset[channel] = self.block.channelsdict[channel][slice(starttime, endttime)]
-        return dataset
+    def read_into(self, component, array):
+        bufsize = config.CHUNKSIZES['read']
+        if component in self.block.groupsdict:
+            group = self.block.groupsdict[component]
+            sampl = group.sampling_rate
+            length = group.totalsize / sampl
+            step = bufsize / (len(group.channels) * sampl)
+            
+            lower = 0
+            while lower < length:
+                for i, channel in enumerate(group.channels):
+                    upper = min([lower+step, length])
+                    data = channel[lower:upper]
+                    try:
+                        _l = data.size
+                        _b = (int(lower*sampl))
+                        print _b, _l, array.shape
+                        array[i, _b:_b+_l] = data
+                    except TypeError:
+                        raise
+                lower += step
     
-    def write_dataset(self, *args, **kwargs):
-        raise NotImplementedError('Cannot write data in Tucker-Davis format')
-    
-
-
-def register_formats(formats):
-    formats.extend(TDTFormat)
 
 
 tsq_dtype = [

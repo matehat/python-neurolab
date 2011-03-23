@@ -5,7 +5,6 @@ try:
 except ImportError:
     from ordereddict import OrderedDict
 
-
 def options(defaults):
     def decorate(function):
         def caller(*args, **kwargs):
@@ -23,6 +22,58 @@ def options(defaults):
     
     return decorate
 
+def dictitems(_dict):
+    if isinstance(_dict, dict):
+        return tuple([(k, dictitems(_dict[k])) for k in sorted(_dict.keys())])
+    else:
+        return _dict
+
+
+class metadata(object):
+    def __init__(self, property):
+        self.items = {}
+        self.instance = None
+        self.property = property
+    
+    def __get__(self, instance, owner):
+        if instance is not None:
+            self.instance = instance
+        return self
+    
+    def __iter__(self):
+        return self.items.iterkeys()
+    
+    def __repr__(self):
+        return repr(self.items.keys())
+    
+    
+    @property
+    def dict(self):
+        return getattr(self.instance, self.property)
+    
+    def item(self, func):
+        key = func.__name__
+        self.items[key] = func
+        
+        def pfunc(_self):
+            self.instance = _self
+            if self.dict.get(key, None) is None:
+                self.cache(key, save=True)
+            return self.dict[key]
+        
+        pfunc.__name__ = key
+        pfunc.__doc__ = func.__doc__
+        return property(pfunc)
+    
+    def cache(self, key=None, save=False):
+        if key is None:
+            map(self.cache, self.items)
+        else:
+            self.dict[key] = self.items[key](self.instance)
+        if save:
+            self.instance.save()
+    
+
 
 class ObjectList(object):
     def __init__(self, base_class, *objects):
@@ -39,6 +90,9 @@ class ObjectList(object):
     def __iter__(self):
         return iter(self.objects)
     
+    
+    def items(self):
+        return self.objects[:]
     
     def extend(self, *objects):
         if any([not issubclass(obj, self.base_class) for obj in objects]):

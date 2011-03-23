@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block extra_style %}
+  <link rel="stylesheet" href="{{ MEDIA_URL }}css/login.css">
+{% endblock %}
+
+{% block base %}
+  <div class="panel">
+    <header>
+      <h1 class="logo">NEUROLAB</h1>
+      <h2>Authentication</h2>
+    </header>
+  
+    <form id="login-form" action="/login/" method="post">
+      {% if messages %}
+        {% for message in messages %}
+        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    
+      {% csrf_token %}
+      <div id="username">
+        <label for="username">Username</label>
+        <input type="text" class="text" name="username" value="" id="username">
+      </div>
+      <div id="password">
+        <label for="password">Password</label>
+        <input type="password" class="text" name="password" value="" id="password">
+      </div>
+      <input type="submit" name="submit" value="Login" id="submit">
+    </form>
+  </div>
+{% endblock %}

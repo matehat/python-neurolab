@@ -1,0 +1,231 @@
+/* --------------------------------------------------------------
+       grid.css
+       * Sets up an easy-to-use grid of 24 columns.
+
+       By default, the grid is 950px wide, with 24 columns
+       spanning 30px, and a 10px margin between columns.
+-------------------------------------------------------------- */
+/* A container should group all your columns. */
+/* Use this class on any div.span / container to see the grid. */
+/* Columns
+-------------------------------------------------------------- */
+/* Sets up basic grid floating and margin. */
+/* Use these classes to set the width of a column. */
+/* Add these to a column to append empty cols. */
+/* Add these to a column to prepend empty cols. */
+/* Use these classes on an element to push it into the
+next column, or to pull it into the previous column.  */
+/* The last column in a row needs this class. */
+/* Use these classes to set the width of an input or textarea. */
+/* Border on right hand side of a column. */
+/* Border with more whitespace, spans one column. */
+/* Misc classes and elements
+-------------------------------------------------------------- */
+/* In case you need to add a gutter above/below an element */
+/* Use a .box to create a padded box inside a column.  */
+/* Clearing floats without extra markup
+   Based on How To Clear Floats Without Structural Markup by PiE
+   [http://www.positioniseverything.net/easyclearing.html] */
+/* Regular clearing
+   apply to column that should drop below previous ones. */
+#container {
+  width: 1110px;
+  margin: 0 auto;
+  display: block;
+}
+#container :after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden;
+}
+body {
+  background: #eeeeee url(../images/bg.png);
+}
+h1.logo {
+  font-family: futura;
+  font-weight: bold;
+  color: #333;
+}
+h2 {
+  text-transform: uppercase;
+  color: #666;
+}
+span.icon {
+  float: left;
+  width: 16px;
+  height: 16px;
+  display: block;
+  position: relative;
+  top: 1px;
+  margin-right: 3px;
+}
+p.help {
+  color: #999;
+  margin: 5px 10px;
+  font-size: 0.85em;
+}
+header.site {
+  background-color: white;
+  padding: 1.5em 1em 1em 1em;
+  border-radius: 0 0 8px 8px;
+  border: 1px solid #ddd;
+}
+header.site h1 {
+  margin: 0;
+  font-size: 3em;
+  float: left;
+}
+header.site nav {
+  float: right;
+  margin-right: 1em;
+}
+header.site nav li {
+  float: left;
+  list-style-type: none;
+  margin-left: 1em;
+  font-weight: bold;
+}
+header.site nav li a {
+  text-decoration: none;
+  color: #999;
+  font-size: 2em;
+  text-transform: uppercase;
+  margin-top: 1em;
+}
+header.site nav li a:hover {
+  color: #000;
+}
+header.site nav li.logout {
+  font-weight: normal;
+}
+nav.level-2 {
+  margin: 1em .5em 1em 0;
+}
+nav.level-2 li {
+  float: right;
+  list-style-type: none;
+  font-size: 1.5em;
+  margin-right: .5em;
+}
+nav.level-2 li a {
+  display: block;
+  text-decoration: none;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: -0.07em;
+  padding: .2em .5em;
+  border-radius: 4px;
+}
+nav.level-2 li a.active, nav.level-2 li a:hover {
+  background-color: white;
+}
+div#content {
+  background-color: white;
+  padding: 2em 1.5em;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+div#content h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+div#content a.create {
+  margin-bottom: .5em;
+}
+div#content .empty, div#content .deferred {
+  background-color: white;
+  border-radius: 5px;
+  border: 2px dotted #eee;
+  padding: 10px;
+  color: #aaa;
+}
+div#content .empty.deferred, div#content .deferred.deferred {
+  text-align: center;
+}
+.ui-button-icon-only {
+  width: 1.8em;
+}
+.ui-button-icon-only span.ui-button-text {
+  padding: 0.2em;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+  background: #fff;
+}
+body .ui-dialog {
+  border-radius: 8px;
+  -webkit-box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.2);
+  border: 5px solid rgba(0, 0, 0, 0.4);
+}
+body .ui-dialog .ui-dialog-content {
+  padding: 0.5em;
+}
+body .ui-dialog .ui-dialog-content fieldset {
+  margin: 0.5em 0px;
+  padding: 0.5em 1em;
+}
+ul.error {
+  margin: 0;
+}
+ul.error li {
+  list-style: none;
+}
+.error {
+  border-radius: 4px;
+}
+fieldset {
+  border-radius: 8px;
+  border-color: #eee;
+  margin: 1.5em 0;
+}
+label.contains_error {
+  color: #8a1f11;
+}
+select[multiple] {
+  min-width: 120px;
+}
+.ui-widget-header {
+  background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaaa));
+}
+.ui-widget-header span {
+  text-shadow: #eee 1px 1px 1px;
+}
+dl dt, dl dd {
+  line-height: 1.5em;
+  padding: 1px 5px;
+  float: left;
+  font-family: Monaco, Menlo, Courier;
+  border-top: 1px solid #f6f6f6;
+  margin-top: 2px;
+}
+dl dt {
+  clear: left;
+  width: 150px;
+  font-weight: normal;
+  color: #999;
+  padding-left: 0;
+}
+dl dd {
+  color: #333;
+  background-color: #f6f6f6;
+  border-radius: 0 4px 4px 4px;
+  margin-left: 0;
+}
+ul.ui-tabs-nav > li.ui-state-default {
+  background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#cccccc));
+  text-shadow: white 1px 1px 1px;
+  border: 1px solid #bbb;
+}
+ul.ui-tabs-nav > li.ui-state-default.ui-state-active, ul.ui-tabs-nav > li.ui-state-default.ui-state-active.ui-state-hover {
+  background: white;
+  border: 1px solid transparent;
+}
+ul.ui-tabs-nav > li.ui-state-default.ui-state-hover {
+  background: -webkit-gradient(linear, left top, left bottom, from(#f1f1f1), to(#b6b6b6));
+  border: 1px solid #aaa;
+}
+ul.ui-tabs-nav > li.ui-state-default.ui-state-hover a:hover {
+  color: #555;
+}
