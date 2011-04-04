@@ -2,7 +2,7 @@ jQuery ($) ->
   bindFileTree = ->
     ftree = $ @
     if ftree.hasClass 'deferred'
-      $.get "/datasources/#{ftree.closest('li.datasource').attr('data-oid')}/files", {},
+      $.get "/datasources/#{ftree.closest('li.datasource').attr('data-oid')}/files/", {},
         (data) ->
           new_filetree = $ data
           ftree.replaceWith new_filetree
@@ -32,7 +32,7 @@ jQuery ($) ->
       item.addClass 'selected'
       
       fid = item.attr 'data-oid'
-      $.get "/datasources/#{datasource.attr('data-oid')}/files/#{fid}", {},
+      $.get "/datasources/#{datasource.attr('data-oid')}/files/#{fid}/", {},
         (data) =>
           file = $ data
           file.data 'list-item', item
@@ -97,7 +97,7 @@ jQuery ($) ->
         .click (e) ->
           e.preventDefault()
           file.loading()
-          $.get '/db/new',
+          $.get '/db/new/',
             {file: fid},
             (data) ->
               file.unblock()
@@ -113,7 +113,7 @@ jQuery ($) ->
                 .end().filter('.submit').click (e) ->
                   e.preventDefault()
                   dataset_form.loading()
-                  $.post '/db/create',
+                  $.post '/db/new/',
                     dataset_form.formSerialize(),
                     (data) ->
                       dataset_form.unblock()
@@ -124,7 +124,7 @@ jQuery ($) ->
         
     
     def = @find 'div.file.deferred'
-    $.get "/datasources/#{dsid}/files/#{fid}/structure", {},
+    $.get "/datasources/#{dsid}/files/#{fid}/structure/", {},
     (data) ->
       def.replaceWith (structure = $ data)
       bindFileStructure.call structure
@@ -141,7 +141,7 @@ jQuery ($) ->
             e.preventDefault()
             return unless confirm 'Are you sure you wish to delete this datasource?'
             $(@).loading()
-            $.get "/datasources/#{ds_id}/delete", {},
+            $.get "/datasources/#{ds_id}/delete/", {},
               (data) ->
                 ds.remove()
                 ds_list.reload()
@@ -152,7 +152,7 @@ jQuery ($) ->
         .click (e) ->
           e.preventDefault()
           btn = $(@).loading()
-          $.get "/datasources/#{ds_id}/files/refresh", {},
+          $.get "/datasources/#{ds_id}/files/refresh/", {},
             (data) ->
               btn.unblock()
               ds.find('div.files').replaceWith data
@@ -165,7 +165,7 @@ jQuery ($) ->
         .click (e) ->
           e.preventDefault()
           btn = $(@).loading()
-          $.get "/datasources/#{ds_id}/edit", {},
+          $.get "/datasources/#{ds_id}/edit/", {},
             (data) ->
               btn.unblock()
               datasource_form = $(data).appendTo('body')
@@ -177,7 +177,7 @@ jQuery ($) ->
                 .filter('.submit').click (e) ->
                   e.preventDefault()
                   datasource_form.loading()
-                  $.post "/datasources/#{ds_id}/update",
+                  $.post "/datasources/#{ds_id}/update/",
                     datasource_form.formSerialize(),
                     (data) ->
                       datasource_form.unblock()
@@ -228,7 +228,7 @@ jQuery ($) ->
   
   $('#content a.create').button({icons: {primary: 'ui-icon-plus'}}).click ->
     btn = $(@).loading()
-    $.get '/datasources/new',
+    $.get '/datasources/new/',
       {}, (data) ->
         btn.unblock()
         datasource_form = $(data).appendTo('body')
@@ -239,7 +239,7 @@ jQuery ($) ->
           .filter('.submit').click (e) ->
             datasource_form.loading()
             e.preventDefault()
-            $.post '/datasources/create',
+            $.post '/datasources/create/',
               datasource_form.formSerialize(),
               (data) ->
                 datasource_form.unblock()

@@ -262,6 +262,10 @@ class Dataset(Location):
         return block
     
     
+    def output_templates(self, *Q, **kwargs):
+        from neurolab.output import OutputTemplate
+        return OutputTemplate.objects(dataset=self, *Q, **kwargs)
+    
     def blocks(self, *Q, **kwargs):
         return Block.objects(dataset=self, *Q, **kwargs)
     

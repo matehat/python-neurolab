@@ -1,0 +1,22 @@
+<form action="" method="" class="process-form">
+  <h5>{{ output.name }}</h5>
+  <p class="smaller">{{ output.title }}</p>
+  
+  <fieldset>
+    <p style="display: none;"><input type="hidden" name="output" value="{{ output.id }}" id=""></p>
+    
+    {% for field in form %}
+    <div class="field {{ field.name }}">
+      {{ field.errors }}
+      {{ field.label_tag }}<br />
+      {{ field }}
+    </div>
+    {% endfor %}
+    <br />
+  </fieldset>
+  
+  <br />
+  
+  <button class="submit" disabled>Submit</button>
+  <button class="cancel">Cancel</button>
+</form>

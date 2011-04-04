@@ -1,6 +1,4 @@
 <div class="component-view" data-oid="{{ cmp.id }}">
-  <h4>Component Details</h4>
-  
   <div class="component-controls">
     {% if cmp.ready %}
       {% if not cmp.is_source %}
@@ -12,6 +10,12 @@
     {% endif %}
   </div>
   
+  <div class="breadcrumbs">
+    <a href="#" class="go-block">{{ cmp.block.name }}</a>
+    <span class="icon"></span>
+    <span class="top">{{ cmp.name }}</span>
+  </div>
+  
   <dl>
     {% for criterion, value in cmp.criteria_pairs %}
     <dt>{{ criterion }}</dt>
@@ -20,6 +24,7 @@
   </dl>
   
   {% if cmp.available %}
+    <a href="#" class="preview">Show preview of component</a>
     {% with cmp.grapher as grapher %}
       <div class="component-image" {{ grapher.image_htmlattrs }}></div>
     {% endwith %}

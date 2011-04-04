@@ -161,8 +161,6 @@ div#content .empty.deferred, div#content .deferred.deferred {
 }
 body .ui-dialog {
   border-radius: 8px;
-  -webkit-box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.2);
-  border: 5px solid rgba(0, 0, 0, 0.4);
 }
 body .ui-dialog .ui-dialog-content {
   padding: 0.5em;

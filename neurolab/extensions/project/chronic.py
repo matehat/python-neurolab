@@ -15,7 +15,7 @@ class ConcatenatedWaves(MatlabOutputTemplate):
         sampling_rate = forms.FloatField(label="Sampling rate (Hz):")
         references = forms.CharField(
             label="References:",
-            help_text="Lines of the form \"NAME: 1,2,3,4\"",
+            help_text="Lines of the form \"[wavename]: [index],[index],[index]\"",
             widget=forms.Textarea
         )
     

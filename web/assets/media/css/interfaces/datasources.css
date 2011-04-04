@@ -49,6 +49,9 @@ form.dataset-form ul.components li span.component-name {
 .ui-dialog div.compatible-datasets ul.compatible-datasets li:hover span.icon {
   background-image: url(../jqueryui/images/ui-icons_888888_256x240.png);
 }
+div#datasource-list {
+  border: 0;
+}
 ul.datasource-entries {
   padding: 0;
   margin: 0;
@@ -57,6 +60,7 @@ ul.datasource-entries li.empty {
   list-style: none;
 }
 ul.datasource-entries li.datasource {
+  padding: 1em 0 0 0;
   list-style: none;
 }
 ul.datasource-entries li.datasource h5 {
@@ -80,7 +84,7 @@ ul.datasource-entries li.datasource div.files .collapsed {
 }
 ul.datasource-entries li.datasource div.files div.file-details {
   float: left;
-  width: 698px;
+  width: 740px;
 }
 ul.datasource-entries li.datasource div.files div.file-details a.unselect {
   float: right;

@@ -3,34 +3,34 @@
   jQuery(function($) {
     var bindDataset, bindDatasetList, ds_list;
     bindDataset = function() {
-      var buttons, ds, ds_id, viewer;
+      var bindBlockViewer, bindOutputTemplate, buttons, controls, ds, ds_id, ds_url, processes, viewer;
       ds = $(this);
       ds_id = ds.attr('data-oid');
-      viewer = ds.find('div.block-view');
+      ds_url = "/db/" + ds_id;
+      viewer = ds.find('div.right-pane');
+      controls = ds.children('.controls').buttonset();
       buttons = {
-        "delete": ds.find('a.delete').button({
+        "delete": controls.children('a.delete').button({
           icons: {
-            primary: 'ui-icon-minus'
-          },
-          text: false
+            primary: 'ui-icon-trash'
+          }
         }).click(function(e) {
           e.preventDefault();
           if (!confirm('Are you sure you wish to delete this dataset?')) {
             return;
           }
-          return $.get("/db/" + ds_id + "/delete", {}, function(data) {
+          return $.get("" + ds_url + "/delete/", {}, function(data) {
             ds.remove();
             return ds_list.reload();
           });
         }),
-        modify: ds.find('a.modify').button({
+        modify: controls.children('a.modify').button({
           icons: {
             primary: 'ui-icon-pencil'
-          },
-          text: false
+          }
         }).click(function(e) {
           e.preventDefault();
-          return $.get("/db/" + ds_id + "/edit", {}, function(data) {
+          return $.get("" + ds_url + "/edit/", {}, function(data) {
             var dataset_form, dataset_name;
             dataset_form = $(data).appendTo('body');
             dataset_name = dataset_form.find('input[name=name]').val();
@@ -40,7 +40,7 @@
               return dataset_form.remove();
             }).find(':input').uniform().filter('.submit').click(function(e) {
               e.preventDefault();
-              return $.post("/db/" + ds_id + "/update", dataset_form.formSerialize(), function(data) {
+              return $.post("" + ds_url + "/edit/", dataset_form.formSerialize(), function(data) {
                 var new_ds;
                 if (data.success === true) {
                   new_ds = $(data.html).insertAfter(ds);
@@ -59,7 +59,111 @@
           }, 'html');
         })
       };
-      ds.find('.controls').buttonset();
+      bindOutputTemplate = function() {
+        var templ_id, templ_url, template;
+        template = $(this);
+        templ_id = template.attr('data-oid');
+        templ_url = "" + ds_url + "/output/" + templ_id;
+        return template.children('.controls').buttonset().children('.modify').button({
+          icons: {
+            primary: 'ui-icon-pencil'
+          },
+          text: false
+        }).click(function(e) {
+          e.preventDefault();
+          template.loading();
+          return $.get("" + templ_url + "/modify/", {}, function(data) {
+            var template_form;
+            template.unblock();
+            template_form = $(data).appendTo('body');
+            template_form.formDialog();
+            template_form.bind('dialogclose', function() {
+              return template_form.remove();
+            });
+            return template_form.find(":input").uniform().filter('.submit').click(function(e) {
+              e.preventDefault();
+              template_form.loading();
+              return $.post("" + templ_url + "/modify/", template_form.formSerialize(), function(data) {
+                var new_template;
+                if (data.success === true) {
+                  new_template = $(data.html).insertAfter(template);
+                  template.remove();
+                  bindOutputTemplate.call(new_template);
+                  return template_form.dialog('close');
+                } else {
+                  return $$.showErrors(template_form, data);
+                }
+              });
+            }).end().filter('.cancel').click(function(e) {
+              e.preventDefault();
+              return template_form.dialog('close');
+            });
+          });
+        }).end().children('.delete').button({
+          icons: {
+            primary: 'ui-icon-trash'
+          },
+          text: false
+        }).click(function(e) {
+          e.preventDefault();
+          if (!confirm("Are you sure you wish to delete this output process?")) {
+            return;
+          }
+          template.loading();
+          return $.get("" + templ_url + "/delete/", {}, function(data) {
+            if (data.success === true) {
+              return template.remove();
+            }
+          });
+        });
+      };
+      bindBlockViewer = function() {
+        var block, block_id, block_url;
+        block = $(this);
+        block_id = block.attr('data-oid');
+        block_url = "" + ds_url + "/blocks/" + block_id;
+        return block.find('div.block-controls a.delete').button({
+          icons: {
+            primary: 'ui-icon-trash'
+          },
+          text: false
+        }).click(function(e) {
+          return e.preventDefault();
+        });
+      };
+      processes = ds.find('dd.output-processes').children('ul');
+      (function(processes) {
+        var ul;
+        (ul = processes)._toggler = $('<a class="show-output-processes">Show processes</a>');
+        ul._empty = processes.children().length === 0;
+        ul._show = function(fn) {
+          if (processes._empty) {
+            return;
+          }
+          ul.slideDown(100, fn);
+          return ul._toggler.fadeOut(100, function() {
+            return $(this).remove();
+          });
+        };
+        if (!ul._empty) {
+          return ul._toggler.appendTo(ul.hide().parent()).button({
+            icons: {
+              primary: 'ui-icon-triangle-1-s'
+            }
+          }).click(function(e) {
+            e.preventDefault();
+            return ul._show();
+          });
+        }
+      })(processes);
+      ds.find('dd.output-processes > ul.output-processes > li').each(bindOutputTemplate);
+      ds.find('dd.output-processes a.create').button({
+        icons: {
+          primary: "ui-icon-plus"
+        }
+      }).click(function(e) {
+        return e.preventDefault();
+      });
       return ds.find('ul.groups > li.group').each(function() {
         var group;
         group = $(this);
@@ -68,17 +172,31 @@
           return group.toggleClass('expanded');
         });
         return group.find('ul.blocks li.block').each(function() {
-          var bindComponent, bindComponents, block, block_id;
+          var bindComponent, bindComponents, block, block_id, block_url;
           block = $(this);
           block_id = block.attr('data-oid');
+          block_url = "" + ds_url + "/blocks/" + block_id;
           bindComponent = function() {
-            var cmp, cmp_id, graph_element, grapher, type;
+            var cmp, cmp_id, graph_element, show_preview, type;
             cmp = $(this);
             cmp_id = cmp.attr('data-oid');
-            graph_element = cmp.find('.component-image');
+            graph_element = cmp.find('.component-image').hide();
+            show_preview = cmp.find('a.preview').button({
+              icons: {
+                primary: 'ui-icon-search'
+              }
+            });
             if ((type = graph_element.attr('data-type')) != null) {
-              grapher = new $G[type](graph_element);
-              grapher.prepare();
+              show_preview.click(function(e) {
+                var grapher;
+                e.preventDefault();
+                show_preview.remove();
+                graph_element.show();
+                grapher = new $G[type](graph_element);
+                return grapher.prepare();
+              });
+            } else {
+              show_preview.add(graph_element).remove();
             }
             cmp.find('a.delete').button({
               icons: {
@@ -163,8 +281,9 @@
             var cmps;
             cmps = this;
             return cmps.find('li.cmp').each(function() {
-              var cmp;
+              var cmp, cmp_id;
               cmp = $(this);
+              cmp_id = cmp.attr('data-oid');
               return cmp.find('span.cmp-name').click(function(e) {
                 var cmp_title;
                 e.preventDefault();
@@ -173,9 +292,7 @@
                   return;
                 }
                 block.loading();
-                return $.get("/db/" + ds_id + "/blocks/" + block_id + "/view/", {
-                  component: _.strip(cmp_title.text())
-                }, function(data) {
+                return $.get("" + block_url + "/components/" + cmp_id + "/", {}, function(data) {
                   var cmp_viewer;
                   block.unblock();
                   ds.find('li.cmp.selected').removeClass('selected');
@@ -190,7 +307,7 @@
           block.find('span.block-name > span.icon.delete').click(function(e) {
             var url;
             e.preventDefault();
-            url = "/db/" + ds_id + "/blocks/" + block_id + "/delete/";
+            url = "" + block_url + "/delete/";
             if (!confirm("Are you sure you wish to delete this block?\nData on disk will be kept intact.")) {
               return;
             }
@@ -201,26 +318,29 @@
             });
           });
           return block.children('span.block-name').click(function(e) {
-            var block_title;
+            var block_title, cmps;
             e.preventDefault();
             block_title = $(this);
             if (block.hasClass('expanded')) {
               return block.removeClass('expanded');
             } else {
-              if (block_title.siblings('ul.components').length > 0) {
+              if ((cmps = block_title.siblings('ul.components')).length > 0) {
                 ds.find('li.block').removeClass('expanded');
-                return block.addClass('expanded');
+                cmps.remove();
               }
             }
             block.loading();
-            return $.get("/db/" + ds_id + "/blocks/" + block_id + "/components/", {}, function(data) {
-              var cmps;
+            return $.get("" + block_url + "/", {}, function(data) {
+              var block_view;
               block.unblock();
-              cmps = $(data);
+              cmps = $(data.components);
               cmps.insertAfter(block_title);
               ds.find('li.block').removeClass('expanded');
               block.addClass('expanded');
-              return bindComponents.call(cmps);
+              bindComponents.call(cmps);
+              block_view = $(data.details);
+              viewer.children(":not(.empty)").remove().end().find('.empty').hide().end().append(block_view);
+              return bindBlockViewer.call(block_view);
             });
           });
         });

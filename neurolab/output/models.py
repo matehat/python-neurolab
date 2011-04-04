@@ -39,6 +39,9 @@ class OutputTemplate(Document):
     def make_entry(self, entry, jobdata=None):
         raise NotImplementedError
     
+    def delete_entry(self, entry):
+        pass
+    
     def create_jobs(self, entry, task):
         raise NotImplementedError
     
@@ -57,9 +60,11 @@ class FileOutputTemplate(OutputTemplate):
         self.write_file(entry, jobdata, fname)
     
     def delete_entry(self, entry):
-        block.dataset.unlink(
-            block.componentpath(self.make_filename(entry, jobdata))
-        )
+        block = entry.block
+        for jobdata in self.jobs(entry):
+            block.dataset.unlink(
+                block.componentpath(self.make_filename(entry, jobdata))
+            )
     
     def jobs(self, entry):
         raise NotImplementedError
@@ -93,6 +98,10 @@ class OutputEntry(Document):
     
     def make(self, jobdata):
         self.template.make_entry(self, jobdata)
+    
+    def delete(self):
+        self.template.delete_entry(self)
+        super(OutputEntry, self).delete()
     
 
 class OutputTask(Task):

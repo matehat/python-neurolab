@@ -334,7 +334,8 @@
                 if (i === j) {
                   continue;
                 }
-                _results.push(this.graphers[j].wall.css('left', "" + drag.left + "px"));
+                this.graphers[j].wall.css('left', "" + drag.left + "px");
+                _results.push(this.graphers[j].draw());
               }
               return _results;
             }, this));

@@ -202,6 +202,7 @@
             for j in [0...@count]
               continue unless i != j
               @graphers[j].wall.css 'left', "#{drag.left}px"
+              @graphers[j].draw()
         
     
   

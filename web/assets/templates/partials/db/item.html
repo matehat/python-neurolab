@@ -13,6 +13,25 @@
     <dd>{{ dataset.blockname }}</dd>
     <dt>Group Name</dt>
     <dd>{{ dataset.groupname }}</dd>
+    
+    <dt class="output-processes">Output Processes</dt>
+    <dd class="output-processes">
+      <ul class="output-processes">
+      {% for template in dataset.output_templates %}
+        <li class="output-template">
+          <div class="controls">
+            <a href="#" title="Modify" class="modify">Modify</a><a href="#" title="Delete" class="delete">Delete</a>
+          </div>
+          
+          <span class="name"><span class="icon"></span>
+            {{ template.name }}</span>
+          <span class="type">{{ template.title }}</span>
+        </li>
+      {% endfor %}
+      </ul>
+      
+      <a href="#" title="create" class="create">Add an output process</a>
+    </dd>
   </dl>
   
   <h3>Blocks</h3>
@@ -41,7 +60,7 @@
           {% endfor %}
         </ul>
       </div>
-      <div class="block-view">
+      <div class="right-pane">
         <div class="empty">
           <strong>Select a block from the list on the left.</strong><br />
           After selecting a block, you will be able to preview its content and act on it.

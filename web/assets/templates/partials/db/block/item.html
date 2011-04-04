@@ -1,0 +1,41 @@
+<div class="block-view" data-oid="{{ blk.id }}">
+  <div class="block-controls">
+    <a href="#" class="delete">Delete</a>
+  </div>
+  
+  <div class="breadcrumbs">
+    <span class="top">{{ blk.name }}</span>
+  </div>
+  
+  <dl>
+    <dt>Start time</dt>
+    <dd>{{ blk.starttime }}</dd>
+    
+    <dt>Length (s)</dt>
+    <dd>{{ blk.length }}</dd>
+    
+    {% for term, value in blk.metadata.iteritems %}
+      <dt>{{ term }}</dt>
+      <dd>{{ value }}</dd>
+    {% endfor %}
+    
+    <dt class="output-processes">Output Processes</dt>
+    <dd class="output-processes">
+      <ul class="output-processes">
+      {% for entry in blk.output_processes %}
+        <li class="output-entry">
+          {% if entry.initiated %}
+            <a href="#" title="Discard" class="discard">Discard</a>
+          {% else %}
+            <a href="#" title="Make" class="make">Make</a>
+          {% endif %}
+          
+          <span class="name"><span class="icon"></span>
+            {{ entry.name }}</span>
+          <span class="type">{{ entry.template.title }}</span>
+        </li>
+      {% endfor %}
+      </ul>
+    </dd>
+  </dl>
+</div>

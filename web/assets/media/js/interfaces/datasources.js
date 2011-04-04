@@ -6,7 +6,7 @@
       var files, ftree, viewer;
       ftree = $(this);
       if (ftree.hasClass('deferred')) {
-        return $.get("/datasources/" + (ftree.closest('li.datasource').attr('data-oid')) + "/files", {}, function(data) {
+        return $.get("/datasources/" + (ftree.closest('li.datasource').attr('data-oid')) + "/files/", {}, function(data) {
           var new_filetree;
           new_filetree = $(data);
           ftree.replaceWith(new_filetree);
@@ -42,7 +42,7 @@
         item.closest('ul.level-0').find('li.selected').removeClass('selected');
         item.addClass('selected');
         fid = item.attr('data-oid');
-        return $.get("/datasources/" + (datasource.attr('data-oid')) + "/files/" + fid, {}, __bind(function(data) {
+        return $.get("/datasources/" + (datasource.attr('data-oid')) + "/files/" + fid + "/", {}, __bind(function(data) {
           var file;
           file = $(data);
           file.data('list-item', item);
@@ -115,7 +115,7 @@
         }).click(function(e) {
           e.preventDefault();
           file.loading();
-          return $.get('/db/new', {
+          return $.get('/db/new/', {
             file: fid
           }, function(data) {
             var component_list, dataset_form;
@@ -133,7 +133,7 @@
             }).end().filter('.submit').click(function(e) {
               e.preventDefault();
               dataset_form.loading();
-              return $.post('/db/create', dataset_form.formSerialize(), function(data) {
+              return $.post('/db/new/', dataset_form.formSerialize(), function(data) {
                 dataset_form.unblock();
                 if (data.success === true) {
                   return dataset_form.dialog('close');
@@ -146,7 +146,7 @@
         });
       };
       def = this.find('div.file.deferred');
-      return $.get("/datasources/" + dsid + "/files/" + fid + "/structure", {}, function(data) {
+      return $.get("/datasources/" + dsid + "/files/" + fid + "/structure/", {}, function(data) {
         var structure;
         def.replaceWith((structure = $(data)));
         return bindFileStructure.call(structure);
@@ -168,7 +168,7 @@
             return;
           }
           $(this).loading();
-          return $.get("/datasources/" + ds_id + "/delete", {}, function(data) {
+          return $.get("/datasources/" + ds_id + "/delete/", {}, function(data) {
             ds.remove();
             return ds_list.reload();
           });
@@ -182,7 +182,7 @@
           var btn;
           e.preventDefault();
           btn = $(this).loading();
-          return $.get("/datasources/" + ds_id + "/files/refresh", {}, function(data) {
+          return $.get("/datasources/" + ds_id + "/files/refresh/", {}, function(data) {
             btn.unblock();
             ds.find('div.files').replaceWith(data);
             return bindFileTree.call(ds.find('div.files'));
@@ -197,7 +197,7 @@
           var btn;
           e.preventDefault();
           btn = $(this).loading();
-          return $.get("/datasources/" + ds_id + "/edit", {}, function(data) {
+          return $.get("/datasources/" + ds_id + "/edit/", {}, function(data) {
             var datasource_form, datasource_name;
             btn.unblock();
             datasource_form = $(data).appendTo('body');
@@ -209,7 +209,7 @@
             }).find(':input').uniform().filter('.submit').click(function(e) {
               e.preventDefault();
               datasource_form.loading();
-              return $.post("/datasources/" + ds_id + "/update", datasource_form.formSerialize(), function(data) {
+              return $.post("/datasources/" + ds_id + "/update/", datasource_form.formSerialize(), function(data) {
                 var new_ds;
                 datasource_form.unblock();
                 if (data.success === true) {
@@ -269,7 +269,7 @@
     }).click(function() {
       var btn;
       btn = $(this).loading();
-      return $.get('/datasources/new', {}, function(data) {
+      return $.get('/datasources/new/', {}, function(data) {
         var datasource_form;
         btn.unblock();
         datasource_form = $(data).appendTo('body');
@@ -280,7 +280,7 @@
         }).find(':input').uniform().filter('.submit').click(function(e) {
           datasource_form.loading();
           e.preventDefault();
-          return $.post('/datasources/create', datasource_form.formSerialize(), function(data) {
+          return $.post('/datasources/create/', datasource_form.formSerialize(), function(data) {
             var new_ds;
             datasource_form.unblock();
             if (data.success === true) {
