@@ -111,7 +111,7 @@ class WaveGrapher(Grapher):
             factor = floor(N / self.width)
         else:
             factor = 1
-        sel = slice(bounds[0], bounds[1], 1) if restricted else slice(0, None, factor)
+        sel = slice(bounds[0], bounds[1], factor) if restricted else slice(0, None, factor)
         return self.array[sel]
     
     def T(self):
