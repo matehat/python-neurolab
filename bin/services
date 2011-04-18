@@ -25,6 +25,8 @@ parser.add_argument('-u', '--uninstall', dest="actions", action="append_const", 
     help='Uninstall the specified service')
 parser.add_argument('-S', '--stop', dest="actions", action="append_const", const='stop',
     help='Stop the specified service')
+parser.add_argument('-R', '--restart', dest="actions", action="append_const", const='restart',
+    help='Restart the specified service')
 
 parser.add_argument('services', nargs='+', choices=('db', 'httpd', 'workers'),
     help='Services to act on.')
@@ -77,6 +79,9 @@ if opts.platform == 'launchd':
         map(start_launchd, opts.services)
     if 'stop' in opts.actions:
         map(stop_launchd, opts.services)
+    if 'restart' in opts.actions:
+        map(stop_launchd, opts.services)
+        map(start_launchd, opts.services)
     
 elif opts.platform == 'runit':
     repos = '/etc/sv'
