@@ -162,6 +162,10 @@ div#content .empty.deferred, div#content .deferred.deferred {
 body .ui-dialog {
   border-radius: 8px;
 }
+body .ui-dialog h5 {
+  margin: 10px 0;
+  text-transform: uppercase;
+}
 body .ui-dialog .ui-dialog-content {
   padding: 0.5em;
 }

@@ -318,6 +318,19 @@ class Block(Document):
         return self.dataset.path(self.group, self.name)
     
     
+    def output_processes(self):
+        from neurolab.output.models import *
+        
+        for template in self.dataset.output_templates():
+            entry = OutputEntry.objects(block=self, template=template)
+            obj = {
+                'initiated': entry.count(),
+                'template': template,
+            }
+            if obj['initiated']:
+                obj['entry'] = entry[0]
+            yield obj
+    
     def load(self):
         infos = self.sourcefile.infos
         self.starttime = infos['starttime']

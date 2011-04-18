@@ -2,11 +2,11 @@
 {% load db %}
 
 {% block extra_script %}
-  <script src="{{ MEDIA_URL }}js/interfaces/db.js" type="text/javascript" charset="utf-8"></script>
-  <script src="{{ MEDIA_URL }}js/graphics.js" type="text/javascript" charset="utf-8"></script>
+  <script src="{{ STATIC_URL }}js/interfaces/db.js" type="text/javascript" charset="utf-8"></script>
+  <script src="{{ STATIC_URL }}js/graphics.js" type="text/javascript" charset="utf-8"></script>
 {% endblock %}
 {% block extra_style %}
-  <link rel="stylesheet" href="{{ MEDIA_URL }}css/interfaces/db.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/interfaces/db.css">
 {% endblock %}
 
 {% block base %}

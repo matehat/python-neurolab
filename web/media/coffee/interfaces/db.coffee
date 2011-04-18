@@ -63,19 +63,20 @@ jQuery ($) ->
           .click (e) ->
             e.preventDefault()
             template.loading()
-            $.get "#{templ_url}/modify/", {},
+            $.get "#{templ_url}/edit/", {},
               (data) ->
                 template.unblock()
                 template_form = $(data).appendTo 'body'
-                template_form.formDialog()
+                template_form.formDialog title: "Edit template of output process"
                 template_form.bind 'dialogclose', -> template_form.remove()
                 template_form.find(":input").uniform()
                   .filter('.submit').click (e) ->
                     e.preventDefault()
                     template_form.loading()
-                    $.post "#{templ_url}/modify/",
+                    $.post "#{templ_url}/edit/",
                       template_form.formSerialize(),
                       (data) ->
+                        template_form.unblock()
                         if data.success is yes
                           new_template = $(data.html).insertAfter template
                           template.remove()
@@ -98,17 +99,81 @@ jQuery ($) ->
             template.loading()
             $.get "#{templ_url}/delete/", {},
               (data) ->
-                template.remove() if data.success is true
+                template.slideUp 100, -> template.remove()
             
     
-    bindBlockViewer = ->
+    bindBlock = ->
       block = $ @
       block_id = block.attr 'data-oid'
       block_url = "#{ds_url}/blocks/#{block_id}"
+      
+      bindOutputEntry = ->
+        entry = $ @
+        templ_id = entry.attr 'data-template-oid'
+        entry_url = "#{block_url}/output/#{templ_id}"
+        
+        entry.find('a.make').button
+          icons: {primary: 'ui-icon-play'}
+          text: no
+        .click (e) ->
+          e.preventDefault()
+          entry.loading()
+          $.get "#{entry_url}/make/", {},
+            (data) ->
+              entry.unblock()
+              entry_form = $(data).appendTo 'body'
+              entry_form.formDialog title: "Initiate an processed output"
+              entry_form.bind 'dialogclose', -> entry_form.remove()
+              entry_form.find(":input").uniform()
+                .filter('.submit').click (e) ->
+                  e.preventDefault()
+                  entry_form.loading()
+                  $.post "#{entry_url}/make/",
+                    entry_form.formSerialize(),
+                    (data) ->
+                      entry_form.unblock()
+                      console.log data.success, data.success is yes
+                      if data.success is yes
+                        entry.addClass 'initiated'
+                        entry_form.dialog 'close'
+                      else
+                        $$.showErrors entry_form, data
+                    , 'json'
+                        
+                .end().filter('.cancel').click (e) ->
+                  e.preventDefault()
+                  entry_form.dialog 'close'
+              
+              
+        
+        .end().find('a.discard').button
+          icons: {primary: 'ui-icon-trash'}
+          text: no
+        .click (e) ->
+          e.preventDefault()
+          return unless confirm "Are you sure you wish to discard that processed output?"
+          entry.loading()
+          $.get "#{entry_url}/discard/", {}, (data) -> 
+            entry.unblock()
+            entry.removeClass 'initiated'
+        
+        .end().find('a.show-files').button
+          icons: {primary: 'ui-icon-folder-open'}
+          text: no
+        .click (e) ->
+          e.preventDefault()
+          entry.find('ul.output-entry-files').show()
+          $(@).hide()
+        
+        .end().find('ul.output-entry-files').hide()
+      
       block.find('div.block-controls a.delete').button
         icons: {primary: 'ui-icon-trash'}
         text: no
       .click (e) -> e.preventDefault()
+      
+      output_entries = block.find 'ul.output-processes'
+      output_entries.children().each bindOutputEntry
     
     
     processes = ds.find('dd.output-processes').children 'ul'
@@ -132,7 +197,39 @@ jQuery ($) ->
     ds.find('dd.output-processes > ul.output-processes > li').each bindOutputTemplate
     ds.find('dd.output-processes a.create').button({icons: primary: "ui-icon-plus"}).click (e) ->
       e.preventDefault()
-      
+      (create_template = $(@)).loading()
+      url = "#{ds_url}/output/new/"
+      $.get url, {},
+        (data) ->
+          create_template.unblock()
+          template_form = $(data).appendTo 'body'
+          form_body = template_form.find '.output-form-body'
+          template_form.formDialog(title: "Create an output process")
+            .bind('dialogclose', -> template_form.remove())
+            .find('[name=output_type]').change ->
+                $.get url, {'output': $(@).val()}, (data) ->
+                  form_body.empty().append data
+                  form_body.find(':input').uniform().end()
+                  template_form.find('.submit').removeAttr('disabled')
+                  $.uniform.update()
+            .end().find(":input").uniform()
+            .filter('.submit').click (e) ->
+              e.preventDefault()
+              template_form.loading()
+              $.post url, template_form.formSerialize(),
+                (data) ->
+                  template_form.unblock()
+                  if data.success is yes
+                    bindOutputTemplate.call $(data.html).appendTo processes
+                    template_form.dialog 'close'
+                  else
+                    $$.showErrors template_form, data
+            
+            .end().filter('.cancel').click (e) ->
+              e.preventDefault()
+              template_form.dialog 'close'
+        
+    
     ds.find('ul.groups > li.group').each ->
       group = $ @
       group.children('span.group-name').click (e) -> 
@@ -160,6 +257,19 @@ jQuery ($) ->
               grapher.prepare()
           else
             show_preview.add(graph_element).remove()
+          
+          cmp.find('div.breadcrumbs .go-block').click (e) ->
+            e.preventDefault()
+            $(@).loading()
+            $.get "#{block_url}/", {},
+              (data) ->
+                block_view = $ data.details
+                ds.find('li.cmp.selected').removeClass 'selected'
+                viewer.children(":not(.empty)").remove().end()
+                  .find('.empty').hide().end()
+                  .append block_view
+
+                bindBlock.call block_view
           
           cmp.find('a.delete').button
             icons: 
@@ -249,6 +359,7 @@ jQuery ($) ->
                     .find('.empty').hide().end()
                     .append cmp_viewer
                   bindComponent.call cmp_viewer
+          
         
         
         block.find('span.block-name > span.icon.delete').click (e) ->
@@ -285,7 +396,7 @@ jQuery ($) ->
                 .find('.empty').hide().end()
                 .append block_view
               
-              bindBlockViewer.call block_view
+              bindBlock.call block_view
         
       
     

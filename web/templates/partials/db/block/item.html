@@ -1,0 +1,51 @@
+<div class="block-view" data-oid="{{ blk.id }}">
+  <div class="block-controls">
+    <a href="#" class="delete">Delete</a>
+  </div>
+  
+  <div class="breadcrumbs">
+    <span class="top">{{ blk.name }}</span>
+  </div>
+  
+  <dl>
+    <dt>Start time</dt>
+    <dd>{{ blk.starttime }}</dd>
+    
+    <dt>Length (s)</dt>
+    <dd>{{ blk.length }}</dd>
+    
+    {% for term, value in blk.metadata.iteritems %}
+      <dt>{{ term }}</dt>
+      <dd>{{ value }}</dd>
+    {% endfor %}
+    
+    <dt class="output-processes">Output Processes</dt>
+    <dd class="output-processes">
+      <ul class="output-processes">
+      {% for entry in blk.output_processes %}
+        <li class="output-entry {% if entry.initiated %}initiated{% endif %}" data-template-oid="{{ entry.template.id }}">
+          <div class="controls">
+            {% if entry.initiated and entry.entry.files %}
+            <a href="#" title="Show Files" class="show-files">Show Files</a>
+            {% endif %}
+            <a href="#" title="Make" class="make">Make</a>
+            <a href="#" title="Discard" class="discard">Discard</a>
+          </div>
+          
+          <span class="name"><span class="icon"></span>
+            {{ entry.template.name }}</span>
+          <span class="type">{{ entry.template.title }}</span>
+          
+          {% if entry.initiated and entry.entry.files %}
+          <ul class="output-entry-files collapsed">
+          {% for fname in entry.entry.files %}
+            <li><span class="icon"></span>{{ fname }}</li>
+          {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+      </ul>
+    </dd>
+  </dl>
+</div>
