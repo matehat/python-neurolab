@@ -262,6 +262,10 @@ class Dataset(Location):
         return block
     
     
+    def output_templates(self, *Q, **kwargs):
+        from neurolab.output import OutputTemplate
+        return OutputTemplate.objects(dataset=self, *Q, **kwargs)
+    
     def blocks(self, *Q, **kwargs):
         return Block.objects(dataset=self, *Q, **kwargs)
     
@@ -313,6 +317,19 @@ class Block(Document):
     def fullpath(self):
         return self.dataset.path(self.group, self.name)
     
+    
+    def output_processes(self):
+        from neurolab.output.models import *
+        
+        for template in self.dataset.output_templates():
+            entry = OutputEntry.objects(block=self, template=template)
+            obj = {
+                'initiated': entry.count(),
+                'template': template,
+            }
+            if obj['initiated']:
+                obj['entry'] = entry[0]
+            yield obj
     
     def load(self):
         infos = self.sourcefile.infos

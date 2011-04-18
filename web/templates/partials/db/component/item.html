@@ -1,0 +1,37 @@
+<div class="component-view" data-oid="{{ cmp.id }}">
+  <div class="component-controls">
+    {% if cmp.ready %}
+      {% if not cmp.is_source %}
+        <a href="#" class="delete">Delete</a>
+      {% endif %}
+      {% if cmp.available %}
+        <a href="#" class="process">Process</a>
+      {% endif %}
+    {% endif %}
+  </div>
+  
+  <div class="breadcrumbs">
+    <a href="#" class="go-block">{{ cmp.block.name }}</a>
+    <span class="icon"></span>
+    <span class="top">{{ cmp.name }}</span>
+  </div>
+  
+  <dl>
+    {% for criterion, value in cmp.criteria_pairs %}
+    <dt>{{ criterion }}</dt>
+    <dd>{{ value }}</dd>
+    {% endfor %}
+  </dl>
+  
+  {% if cmp.available %}
+    <a href="#" class="preview">Show preview of component</a>
+    {% with cmp.grapher as grapher %}
+      <div class="component-image" {{ grapher.image_htmlattrs }}></div>
+    {% endwith %}
+  {% else %}
+    <div class="empty">
+      <strong>Content file not available</strong><br />
+      The content file seems not to be available. Maybe it hasn't been computed yet, or it has been discarded.
+    </div>
+  {% endif %}
+</div>

@@ -14,9 +14,9 @@ else:
 if BASE not in sys.path:
     sys.path.append(BASE)
     
-DEBUG = True
+DEBUG = False
 
-ASSETS = join(BASE, 'web/assets')
+ASSETS = join(BASE, 'web')
 MEDIA = join(ASSETS, 'media/')
 TEMPLATES = {
     'DJANGO': join(ASSETS, 'templates'),
@@ -40,7 +40,7 @@ QUEUES = {
     }
 }
 
-HTTP_WORKERS = 2
+HTTP_WORKERS = 1
 HTTP_ADDRESS = '127.0.0.1:4000'
 
 MEDIA_URL = '/media/'

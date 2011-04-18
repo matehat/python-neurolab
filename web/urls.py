@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from web import db, auth, graphics
 import config
 
@@ -15,3 +16,5 @@ urlpatterns += (
     db.urlpatterns +
     graphics.urlpatterns
 )
+
+urlpatterns += staticfiles_urlpatterns()

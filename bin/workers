@@ -75,7 +75,7 @@ def stop_worker(worker):
         return
     send_signal(workers[worker.pid], signal.SIGINT)
     logs[pid].close()
-    del workers[pid], logs[pid]
+    del workers[pid]#, logs[pid]
     worker.delete()
 
 

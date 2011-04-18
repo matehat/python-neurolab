@@ -5,25 +5,44 @@ from neurolab.db.models import *
 from neurolab.tasks.models import *
 from neurolab.utils import ObjectList
 
+class OutputEntry(Document):
+    template = ReferenceField('OutputTemplate')
+    block = ReferenceField('Block')
+    criteria = DictField()
+    
+    def make(self, jobdata):
+        self.template.make_entry(self, jobdata)
+    
+    def delete(self, *args, **kwargs):
+        self.template.delete_entry(self, *args, **kwargs)
+        super(OutputEntry, self).delete()
+    
+
+class FileOutputEntry(OutputEntry):
+    files = ListField(StringField(), default=lambda: [])
+
+
 class OutputTemplate(Document):
-    dataset = ReferenceField(Dataset)
+    dataset = ReferenceField('Dataset')
     name = StringField()
     criteria = DictField()
     
+    Entry = OutputEntry
     class CriteriaForm(forms.Form):
         pass
     
     
     def entries(self, *Q, **kwargs):
-        return OutputEntry.objects(template=self, *Q, **kwargs)
+        return self.Entry.objects(template=self, *Q, **kwargs)
     
     def entry(self, block, criteria):
-        entry, created = OutputEntry.objects.get_or_create(template=self, block=block)
+        entry, created = self.Entry.objects.get_or_create(template=self, block=block)
         if created:
             crit = {}
             crit.update(self.criteria)
             crit.update(criteria)
             crit = self.CriteriaForm(crit)
+            
             if crit.is_valid():
                 crit = crit.cleaned_data
             else:
@@ -39,27 +58,36 @@ class OutputTemplate(Document):
     def make_entry(self, entry, jobdata=None):
         raise NotImplementedError
     
+    def delete_entry(self, entry):
+        pass
+    
     def create_jobs(self, entry, task):
         raise NotImplementedError
     
 
+
 class FileOutputTemplate(OutputTemplate):
+    Entry = FileOutputEntry
+    
     def create_jobs(self, entry, task):
         for jobdata in self.jobs(entry):
             task.Job(jobdata)
     
     def make_entry(self, entry, jobdata=None):
         block = entry.block
-        fname = block.dataset.path(
-            block.componentpath(self.make_filename(entry, jobdata)),
-            True
-        )
+        fname = self.make_filename(entry, jobdata)
+        if fname not in entry.files:
+            entry.files.append(fname)
+            entry.save()
+        
+        fname = block.dataset.path(block.componentpath(fname), True)
         self.write_file(entry, jobdata, fname)
     
-    def delete_entry(self, entry):
-        block.dataset.unlink(
-            block.componentpath(self.make_filename(entry, jobdata))
-        )
+    def delete_entry(self, entry, discard=True):
+        block = entry.block
+        if discard:
+            for fname in entry.files:
+                block.dataset.unlink(block.componentpath(fname))
     
     def jobs(self, entry):
         raise NotImplementedError
@@ -84,15 +112,6 @@ class ImageOutputTemplate(FileOutputTemplate):
     
     def save_figure(entry, jobdata, fig, _file):
         fig.savefig(_file)
-    
-
-class OutputEntry(Document):
-    template = ReferenceField(OutputTemplate)
-    block = ReferenceField(Block)
-    criteria = DictField()
-    
-    def make(self, jobdata):
-        self.template.make_entry(self, jobdata)
     
 
 class OutputTask(Task):

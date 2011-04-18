@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load datasources %}
+
+{% block extra_script %}
+<script src="{{ STATIC_URL }}js/interfaces/datasources.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+{% block extra_style %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/interfaces/datasources.css">
+{% endblock %}
+
+{% block base %}
+  {% include "partials/header.html" %}
+  
+  <div id="content">
+    <h1>Datasources</h1>
+    
+    <a class="create" href="#">Create Datasource</a>
+    <div id="datasource-list">
+      <ul class="links">
+        {% for datasource in datasources %}
+        <li><a href="#datasource-{{datasource.id}}">{{ datasource.name }}</a></li>
+        {% endfor %}
+      </ul>
+      <ul class='datasource-entries'>
+        {% for datasource in datasources %}
+          {% include "partials/datasources/item.html" %}
+        {% endfor %}
+        <li class="empty" style="display: none;">
+          <strong>There is no datasource configure yet or accessible to you at the moment.</strong><br />
+                  You can either create one or ask other users to share their datasources with you.
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

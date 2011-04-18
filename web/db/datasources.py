@@ -176,14 +176,14 @@ def sourcefiles(request, ds_id, refresh=True):
 
 
 urlpatterns = patterns('',
-    secured(r'^new$', new),
-    secured(r'^create$', create),
+    secured(r'^new/$', new),
+    secured(r'^create/$', create),
     
-    secured(r'^(?P<ds_id>[0-9a-f]+)/edit$', edit),
-    secured(r'^(?P<ds_id>[0-9a-f]+)/update$', update),
-    secured(r'^(?P<ds_id>[0-9a-f]+)/delete$', delete),
-    secured(r'^(?P<ds_id>[0-9a-f]+)/files$', sourcefiles),
-    secured(r'^(?P<ds_id>[0-9a-f]+)/files/refresh$', sourcefiles, {'refresh': True}),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/edit/$', edit),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/update/$', update),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/delete/$', delete),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/files/$', sourcefiles),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/files/refresh/$', sourcefiles, {'refresh': True}),
     secured(r'^(?P<ds_id>[0-9a-f]+)/files/(?P<file_id>[0-9a-f]+)/$', sourcefile),
     secured(r'^(?P<ds_id>[0-9a-f]+)/files/(?P<file_id>[0-9a-f]+)/structure/$', sourcefile_structure),
     secured(r'^(?P<ds_id>[0-9a-f]+)/files/(?P<file_id>[0-9a-f]+)/load/$', sourcefile_load),

@@ -1,0 +1,16 @@
+<form action="" method="" class="output-form">
+  <h5>Choose an output process to associate to the selected dataset.</h5>
+  
+  <select name="output_type" id="output_type">
+    <option value="" disabled>Choose an output process</option>
+    {% for output in output_processes %}
+    <option value="{{ output.slug }}">{{ output.title }}</option>
+    {% endfor %}
+  </select>
+  
+  <div class="output-form-body"></div>
+  <br />
+  
+  <button class="submit" disabled>Submit</button>
+  <button class="cancel">Cancel</button>
+</form>

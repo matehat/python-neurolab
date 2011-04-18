@@ -17,6 +17,7 @@ class TimeFrequencyScalogram(WaveProcessingTask):
         freq_start = forms.FloatField(label='First Frequency', required=True, initial=0.25)
         freq_stop = forms.FloatField(label='Last Frequency', required=True, initial=100.0)
     
+    
     def create_component(self, name):
         argument = self.argument
         cls = Scalogram if argument.slug == 'wave' else ScalogramGroup
@@ -41,7 +42,7 @@ class TimeFrequencyScalogram(WaveProcessingTask):
             cur = 0
             while cur*factor < t_len:
                 L = min([factor*chunksize, t_len-cur*factor])
-                l = int(L/factor)
+                l = min([int(L/factor), self.result.dataset_shape[1]])
                 yield slice(cur*factor, cur*factor+L), slice(cur, cur+l)
                 cur += chunksize
         
@@ -156,12 +157,18 @@ class ScalogramGrapher(Grapher):
         xsampling = self.component.time_sampling_rate
         ysampling = self.component.freq_sampling_rate
         
+        if hasattr(self, 'width'):
+            factor_x = floor((delta_x * xsampling) / self.width)
+            factor_y = floor((delta_y * ysampling) / self.height)
+        else:
+            factor_x = factor_y = 1
+        
         xbounds = [int(round(self.params[k] * xsampling)) for k in ('x_start', 'x_stop')]
         ybounds = [int(round(self.params[k] * ysampling)) for k in ('y_start', 'y_stop')]
         
         step = int((delta_x * xsampling) // 1e3) or 1
-        xsel = slice(xbounds[0], xbounds[1], step) if restricted else slice(0, None, step)
-        ysel = slice(ybounds[0], ybounds[1]) if restricted else slice(0, None)
+        xsel = slice(xbounds[0], xbounds[1], factor_x) if restricted else slice(0, None, factor_x)
+        ysel = slice(ybounds[0], ybounds[1], factor_y) if restricted else slice(0, None, factor_y)
         
         return self.array[xsel, ysel].transpose()
     
@@ -177,8 +184,9 @@ class ScalogramGrapher(Grapher):
         P['v_max'] = float(params.get('v_max', self.component.maximum))
         P['colormap'] = params.get('colormap', 'Greys')
     
-    def draw_axes(self, ax):
+    def draw_axes(self):
         P = self.params
+        ax, = self.axes
         ax.imshow(self.data(), interpolation='nearest', aspect='normal', origin='lower',
             vmin=P['v_min'], vmax=P['v_max'], cmap=P['colormap'])
     
@@ -211,7 +219,7 @@ class ScalogramGroupGrapher(ScalogramGrapher):
         xbounds = [int(floor(self.params[k] * xsampling)) for k in ('x_start', 'x_stop')]
         ybounds = [int(floor(self.params[k] * ysampling)) for k in ('y_start', 'y_stop')]
         
-        step = int((delta_x * xsampling) // 1e3) or 1
+        step = int((delta_x * xsampling) // 3e2) or 1
         xsel = slice(xbounds[0], xbounds[1], step) if restricted else slice(0, None, step)
         ysel = slice(ybounds[0], ybounds[1]) if restricted else slice(0, None)
         
