@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.conf.urls.defaults import *
 from django.template.loader import render_to_string
 
+import json
 from neurolab.db.models import *
 from web.auth import secured_url as secured
 
@@ -112,7 +113,9 @@ def delete(request, ds_id):
 
 
 def output_new(request, ds_id):
+    import json
     from neurolab.db.models import Dataset
+    from neurolab.output.models import OutputTemplate
     
     try:
         ds = Dataset.objects.with_id(ds_id)
@@ -121,32 +124,77 @@ def output_new(request, ds_id):
     
     if request.method == 'GET':
         if 'output' in request.GET:
-            # Should return a form specific to an output process
-            pass
+            try:
+                template = OutputTemplate.templates[request.GET['output']]
+            except KeyError:
+                raise Http404
+            
+            return render_to_response("partials/db/output_form.html", {
+                'template': template,
+                'form': template.CriteriaForm(),
+            })
         else:
-            # Should return the basic dialog for template creation
-            pass
+            return render_to_response("partials/db/output_new.html", {
+                'output_processes': OutputTemplate.templates,
+            })
     else:
-        # Should validate and create output template
-        pass
+        output = OutputTemplate.templates[request.POST['output_type']]
+        form = output.CriteriaForm
+        
+        errors = {}
+        if request.POST.get('name', '').strip() == '':
+            errors['name'] = ['This field is required']
+        elif output.objects(dataset=ds, name=request.POST['name']).count():
+            errors['name'] = ['This name is already used on this dataset']
+        
+        if not errors:
+            criteria = {k: request.POST[k] for k in form.base_fields if k in request.POST}
+            output = output.objects.create(dataset=ds, criteria=criteria, name=request.POST['name'])
+            
+            return HttpResponse(json.dumps({
+                'success': True,
+                'html': render_to_string("partials/db/output_item.html", {'template': output})
+            }), mimetype="application/json")
+        else:
+            return HttpResponse(json.dumps(errors), mimetype="application/json")
 
 def output_edit(request, ds_id, op_id):
+    import json
     from neurolab.db.models import Dataset
     from neurolab.output.models import OutputTemplate
     
     try:
         ds = Dataset.objects.with_id(ds_id)
         op = OutputTemplate.objects.get(dataset=ds, id=op_id)
-    except (Dataset.DoesNotExist):
+    except (Dataset.DoesNotExist, OutputTemplate.DoesNotExist):
         raise Http404
     
     if request.method == 'GET':
-        # Should return the full modification form for the output template
-        # No possibility to choose process type
-        pass
+        return render_to_response("partials/db/output_edit.html", {
+            'form': op.CriteriaForm(initial=op.criteria),
+            'output': op,
+        })
     else:
-        # Should validate and update output template
-        pass
+        form = op.CriteriaForm
+        errors = {}
+        if request.POST.get('name', '').strip() == '':
+            errors['name'] = ['This field is required']
+        elif type(op).objects(dataset=ds, name=request.POST['name'], id__ne=op.id).count():
+            errors['name'] = ['This name is already used on this dataset']
+        
+        if not errors:
+            criteria = {k: request.POST[k] for k in form.base_fields if k in request.POST}
+            op.criteria.update(criteria)
+            op.name = request.POST['name']
+            op.save()
+        
+            return HttpResponse(json.dumps({
+                'success': True,
+                'html': render_to_string("partials/db/output_item.html", {'template': op})
+            }), mimetype="application/json")
+        else:
+            return HttpResponse(json.dumps(errors), mimetype="application/json")
+        
 
 def output_delete(request, ds_id, op_id):
     from neurolab.db.models import Dataset
@@ -188,10 +236,46 @@ def block_delete(request, ds_id, block_id):
 
 
 def block_output_make(request, ds_id, block_id, op_id):
-    pass
+    import json
+    from neurolab.db.models import Dataset, Block
+    from neurolab.output.models import OutputTemplate, OutputEntry
+    
+    try:
+        ds = Dataset.objects.with_id(ds_id)
+        blk = Block.objects.get(dataset=ds, id=block_id)
+        template = OutputTemplate.objects.get(dataset=ds, id=op_id)
+    except (Dataset.DoesNotExist, Block.DoesNotExist, OutputTemplate.DoesNotExist):
+        raise Http404
+    
+    if request.method == 'GET':
+        return render_to_response("partials/db/block/output.html", {
+            'form': template.CriteriaForm(initial=template.criteria),
+            'output': template,
+        })
+    else:
+        form = template.CriteriaForm(request.POST)
+        if form.is_valid():
+            template.entry(blk, form.cleaned_data)
+            return HttpResponse(json.dumps({'success': True}))
+        else:
+            return HttpResponse(json.dumps(form.errors), mimetype="application/json")
+    
 
 def block_output_discard(request, ds_id, block_id, op_id):
-    pass
+    import json
+    from neurolab.db.models import Dataset, Block
+    from neurolab.output.models import OutputTemplate, OutputEntry
+    
+    try:
+        ds = Dataset.objects.with_id(ds_id)
+        blk = Block.objects.get(dataset=ds, id=block_id)
+        template = OutputTemplate.objects.get(dataset=ds, id=op_id)
+        entry = OutputEntry.objects.get(block=blk, template=template)
+    except (Dataset.DoesNotExist, Block.DoesNotExist, OutputTemplate.DoesNotExist):
+        raise Http404
+    
+    entry.delete(discard=False)
+    return HttpResponse("")
 
 
 def component_view(request, ds_id, block_id, cmp_id):
@@ -283,7 +367,7 @@ def component_process(request, ds_id, block_id, cmp_id):
             except KeyError:
                 raise Http404
             
-            return render_to_response("partials/db/component/processform.html", {
+            return render_to_response("partials/db/component/process_form.html", {
                 'task': task,
                 'form': task.CriteriaForm(),
                 'cmp': component
@@ -308,7 +392,7 @@ urlpatterns = patterns('',
     secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/$', block_view),
     secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/delete/$', block_delete),
     
-    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/output/(?P<op_id>[0-9a-f]+)/init/$', block_output_make),
+    secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/output/(?P<op_id>[0-9a-f]+)/make/$', block_output_make),
     secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/output/(?P<op_id>[0-9a-f]+)/discard/$', block_output_discard),
     
     secured(r'^(?P<ds_id>[0-9a-f]+)/blocks/(?P<block_id>[0-9a-f]+)/components/(?P<cmp_id>[0-9a-f]+)/$', component_view),

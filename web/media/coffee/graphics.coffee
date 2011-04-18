@@ -52,12 +52,8 @@
         top: "#{@top()}px"
         width: "#{_w}px"
         height: "#{_h}px"
-        opacity: 0.0
-      image = $("<img src=\"#{url}\" />").css(opacity: 0, position: 'absolute', left: 0, top: 0).appendTo 'body'
-      image.load =>
-        _.defer =>
-          @element.css('background-image': "url(#{url})").animate {opacity: 1}, 500
-          image.remove()
+        'background-image': "url(#{url})"
+      
     
     params: ->
       scales = @scales()

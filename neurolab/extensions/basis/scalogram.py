@@ -17,6 +17,7 @@ class TimeFrequencyScalogram(WaveProcessingTask):
         freq_start = forms.FloatField(label='First Frequency', required=True, initial=0.25)
         freq_stop = forms.FloatField(label='Last Frequency', required=True, initial=100.0)
     
+    
     def create_component(self, name):
         argument = self.argument
         cls = Scalogram if argument.slug == 'wave' else ScalogramGroup
@@ -41,7 +42,7 @@ class TimeFrequencyScalogram(WaveProcessingTask):
             cur = 0
             while cur*factor < t_len:
                 L = min([factor*chunksize, t_len-cur*factor])
-                l = int(L/factor)
+                l = min([int(L/factor), self.result.dataset_shape[1]])
                 yield slice(cur*factor, cur*factor+L), slice(cur, cur+l)
                 cur += chunksize
         

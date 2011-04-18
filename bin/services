@@ -2,7 +2,7 @@
 
 from argparse import ArgumentParser
 from os.path import expanduser, join, abspath, exists, split
-from os import makedirs, system, unlink
+from os import makedirs, system, unlink, environ
 
 bindir = split(abspath(__file__))[0]
 parser = ArgumentParser(
@@ -45,7 +45,7 @@ if opts.platform == 'launchd':
     def create_launchd(name):
         from plistlib import writePlist
         serv = dict(
-            EnvironmentVariables = {'PATH': "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/bin"},
+            EnvironmentVariables = dict(environ),
             Label = 'org.neurolab.%s' % name,
             ProgramArguments = [join(bindir, "%s" % name)],
             RunAtLoad = True,

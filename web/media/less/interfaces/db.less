@@ -46,11 +46,18 @@ ul.dataset-entries {
         font-family: Helvetica, Arial;
         font-size: 1.15em;
         
-        li.output-template {
+        li.output-template, li.output-entry {
           list-style: none;
           width: 500px;
           border-bottom: 1px solid #f6f6f6;
           padding: 5px 0;
+          
+          &.initiated {
+            a.make { display: none; }
+          }
+          &:not(.initiated) {
+            a.discard { display: none; }
+          }
           
           span.name {
             padding-top: 4px;
@@ -69,6 +76,21 @@ ul.dataset-entries {
           }
           div.controls {
             border: 1px solid white;
+          }
+          ul.output-entry-files {
+            margin: 5px 0 5px 16px;
+            padding: 0;
+            
+            > li {
+              list-style: none;
+              font-family: Monaco, Courier;
+              font-size: 0.8em;
+              
+              > span.icon {
+                background-image: url(../jqueryui/images/ui-icons_d1d1d1_256x240.png);
+                background-position: -32px -96px;
+              }
+            }
           }
         }
       }

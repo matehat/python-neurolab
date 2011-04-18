@@ -3,7 +3,7 @@
   jQuery(function($) {
     var bindDataset, bindDatasetList, ds_list;
     bindDataset = function() {
-      var bindBlockViewer, bindOutputTemplate, buttons, controls, ds, ds_id, ds_url, processes, viewer;
+      var bindBlock, bindOutputTemplate, buttons, controls, ds, ds_id, ds_url, processes, viewer;
       ds = $(this);
       ds_id = ds.attr('data-oid');
       ds_url = "/db/" + ds_id;
@@ -72,19 +72,22 @@
         }).click(function(e) {
           e.preventDefault();
           template.loading();
-          return $.get("" + templ_url + "/modify/", {}, function(data) {
+          return $.get("" + templ_url + "/edit/", {}, function(data) {
             var template_form;
             template.unblock();
             template_form = $(data).appendTo('body');
-            template_form.formDialog();
+            template_form.formDialog({
+              title: "Edit template of output process"
+            });
             template_form.bind('dialogclose', function() {
               return template_form.remove();
             });
             return template_form.find(":input").uniform().filter('.submit').click(function(e) {
               e.preventDefault();
               template_form.loading();
-              return $.post("" + templ_url + "/modify/", template_form.formSerialize(), function(data) {
+              return $.post("" + templ_url + "/edit/", template_form.formSerialize(), function(data) {
                 var new_template;
+                template_form.unblock();
                 if (data.success === true) {
                   new_template = $(data.html).insertAfter(template);
                   template.remove();
@@ -111,18 +114,85 @@
           }
           template.loading();
           return $.get("" + templ_url + "/delete/", {}, function(data) {
-            if (data.success === true) {
+            return template.slideUp(100, function() {
               return template.remove();
-            }
+            });
           });
         });
       };
-      bindBlockViewer = function() {
-        var block, block_id, block_url;
+      bindBlock = function() {
+        var bindOutputEntry, block, block_id, block_url, output_entries;
         block = $(this);
         block_id = block.attr('data-oid');
         block_url = "" + ds_url + "/blocks/" + block_id;
-        return block.find('div.block-controls a.delete').button({
+        bindOutputEntry = function() {
+          var entry, entry_url, templ_id;
+          entry = $(this);
+          templ_id = entry.attr('data-template-oid');
+          entry_url = "" + block_url + "/output/" + templ_id;
+          return entry.find('a.make').button({
+            icons: {
+              primary: 'ui-icon-play'
+            },
+            text: false
+          }).click(function(e) {
+            e.preventDefault();
+            entry.loading();
+            return $.get("" + entry_url + "/make/", {}, function(data) {
+              var entry_form;
+              entry.unblock();
+              entry_form = $(data).appendTo('body');
+              entry_form.formDialog({
+                title: "Initiate an processed output"
+              });
+              entry_form.bind('dialogclose', function() {
+                return entry_form.remove();
+              });
+              return entry_form.find(":input").uniform().filter('.submit').click(function(e) {
+                e.preventDefault();
+                entry_form.loading();
+                return $.post("" + entry_url + "/make/", entry_form.formSerialize(), function(data) {
+                  entry_form.unblock();
+                  console.log(data.success, data.success === true);
+                  if (data.success === true) {
+                    entry.addClass('initiated');
+                    return entry_form.dialog('close');
+                  } else {
+                    return $$.showErrors(entry_form, data);
+                  }
+                }, 'json');
+              }).end().filter('.cancel').click(function(e) {
+                e.preventDefault();
+                return entry_form.dialog('close');
+              });
+            });
+          }).end().find('a.discard').button({
+            icons: {
+              primary: 'ui-icon-trash'
+            },
+            text: false
+          }).click(function(e) {
+            e.preventDefault();
+            if (!confirm("Are you sure you wish to discard that processed output?")) {
+              return;
+            }
+            entry.loading();
+            return $.get("" + entry_url + "/discard/", {}, function(data) {
+              entry.unblock();
+              return entry.removeClass('initiated');
+            });
+          }).end().find('a.show-files').button({
+            icons: {
+              primary: 'ui-icon-folder-open'
+            },
+            text: false
+          }).click(function(e) {
+            e.preventDefault();
+            entry.find('ul.output-entry-files').show();
+            return $(this).hide();
+          }).end().find('ul.output-entry-files').hide();
+        };
+        block.find('div.block-controls a.delete').button({
           icons: {
             primary: 'ui-icon-trash'
           },
@@ -130,6 +200,8 @@
         }).click(function(e) {
           return e.preventDefault();
         });
+        output_entries = block.find('ul.output-processes');
+        return output_entries.children().each(bindOutputEntry);
       };
       processes = ds.find('dd.output-processes').children('ul');
       (function(processes) {
@@ -162,7 +234,45 @@
           primary: "ui-icon-plus"
         }
       }).click(function(e) {
-        return e.preventDefault();
+        var create_template, url;
+        e.preventDefault();
+        (create_template = $(this)).loading();
+        url = "" + ds_url + "/output/new/";
+        return $.get(url, {}, function(data) {
+          var form_body, template_form;
+          create_template.unblock();
+          template_form = $(data).appendTo('body');
+          form_body = template_form.find('.output-form-body');
+          return template_form.formDialog({
+            title: "Create an output process"
+          }).bind('dialogclose', function() {
+            return template_form.remove();
+          }).find('[name=output_type]').change(function() {
+            return $.get(url, {
+              'output': $(this).val()
+            }, function(data) {
+              form_body.empty().append(data);
+              form_body.find(':input').uniform().end();
+              template_form.find('.submit').removeAttr('disabled');
+              return $.uniform.update();
+            });
+          }).end().find(":input").uniform().filter('.submit').click(function(e) {
+            e.preventDefault();
+            template_form.loading();
+            return $.post(url, template_form.formSerialize(), function(data) {
+              template_form.unblock();
+              if (data.success === true) {
+                bindOutputTemplate.call($(data.html).appendTo(processes));
+                return template_form.dialog('close');
+              } else {
+                return $$.showErrors(template_form, data);
+              }
+            });
+          }).end().filter('.cancel').click(function(e) {
+            e.preventDefault();
+            return template_form.dialog('close');
+          });
+        });
       });
       return ds.find('ul.groups > li.group').each(function() {
         var group;
@@ -198,6 +308,17 @@
             } else {
               show_preview.add(graph_element).remove();
             }
+            cmp.find('div.breadcrumbs .go-block').click(function(e) {
+              e.preventDefault();
+              $(this).loading();
+              return $.get("" + block_url + "/", {}, function(data) {
+                var block_view;
+                block_view = $(data.details);
+                ds.find('li.cmp.selected').removeClass('selected');
+                viewer.children(":not(.empty)").remove().end().find('.empty').hide().end().append(block_view);
+                return bindBlock.call(block_view);
+              });
+            });
             cmp.find('a.delete').button({
               icons: {
                 primary: 'ui-icon-trash'
@@ -340,7 +461,7 @@
               bindComponents.call(cmps);
               block_view = $(data.details);
               viewer.children(":not(.empty)").remove().end().find('.empty').hide().end().append(block_view);
-              return bindBlockViewer.call(block_view);
+              return bindBlock.call(block_view);
             });
           });
         });

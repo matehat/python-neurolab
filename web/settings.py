@@ -18,7 +18,9 @@ import config
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (('Mathieu Blais-D\'Amours', 'mathieu.blais-damours.1@ulaval.ca'),)
+ADMINS = (
+    ('Mathieu Blais-D\'Amours', 'mathieu.blais-damours.1@ulaval.ca'),
+)
 AUTHENTICATION_BACKENDS = (
     'neurolab.db.auth.Backend',
 )
@@ -26,8 +28,8 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 LOGIN_URL = '/login/'
 
-MEDIA_URL = '//'
-ADMIN_MEDIA_PREFIX = '//'
+STATIC_URL = config.MEDIA_URL
+STATICFILES_DIRS = (config.MEDIA,)
 
 MANAGERS = ADMINS
 
@@ -69,14 +71,16 @@ ROOT_URLCONF = 'web.urls'
 TEMPLATE_DIRS = (config.TEMPLATES['DJANGO'],)
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
-    'web.urls.media_url',
     'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.static',
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
+    
     'web',
     'gunicorn',
 )

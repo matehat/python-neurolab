@@ -14,9 +14,9 @@ else:
 if BASE not in sys.path:
     sys.path.append(BASE)
     
-DEBUG = True
+DEBUG = False
 
-ASSETS = join(BASE, 'web/assets')
+ASSETS = join(BASE, 'web')
 MEDIA = join(ASSETS, 'media/')
 TEMPLATES = {
     'DJANGO': join(ASSETS, 'templates'),

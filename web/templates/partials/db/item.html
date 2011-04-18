@@ -18,15 +18,7 @@
     <dd class="output-processes">
       <ul class="output-processes">
       {% for template in dataset.output_templates %}
-        <li class="output-template">
-          <div class="controls">
-            <a href="#" title="Modify" class="modify">Modify</a><a href="#" title="Delete" class="delete">Delete</a>
-          </div>
-          
-          <span class="name"><span class="icon"></span>
-            {{ template.name }}</span>
-          <span class="type">{{ template.title }}</span>
-        </li>
+        {% include "partials/db/output_item.html" %}
       {% endfor %}
       </ul>
       

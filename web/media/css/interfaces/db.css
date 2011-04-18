@@ -49,28 +49,47 @@ ul.dataset-entries li.dataset dd.output-processes > ul {
   font-family: Helvetica, Arial;
   font-size: 1.15em;
 }
-ul.dataset-entries li.dataset dd.output-processes > ul li.output-template {
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry {
   list-style: none;
   width: 500px;
   border-bottom: 1px solid #f6f6f6;
   padding: 5px 0;
 }
-ul.dataset-entries li.dataset dd.output-processes > ul li.output-template span.name {
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template.initiated a.make, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry.initiated a.make {
+  display: none;
+}
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template:not(.initiated) a.discard, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry:not(.initiated) a.discard {
+  display: none;
+}
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template span.name, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry span.name {
   padding-top: 4px;
   font-weight: bold;
 }
-ul.dataset-entries li.dataset dd.output-processes > ul li.output-template span.name span.icon {
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template span.name span.icon, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry span.name span.icon {
   background-image: url(../jqueryui/images/ui-icons_d1d1d1_256x240.png);
   background-position: -48px -96px;
 }
-ul.dataset-entries li.dataset dd.output-processes > ul li.output-template span.type {
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template span.type, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry span.type {
   display: block;
   font-size: 0.92em;
   color: #666;
   margin-left: 18px;
 }
-ul.dataset-entries li.dataset dd.output-processes > ul li.output-template div.controls {
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template div.controls, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry div.controls {
   border: 1px solid white;
+}
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template ul.output-entry-files, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry ul.output-entry-files {
+  margin: 5px 0 5px 16px;
+  padding: 0;
+}
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template ul.output-entry-files > li, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry ul.output-entry-files > li {
+  list-style: none;
+  font-family: Monaco, Courier;
+  font-size: 0.8em;
+}
+ul.dataset-entries li.dataset dd.output-processes > ul li.output-template ul.output-entry-files > li > span.icon, ul.dataset-entries li.dataset dd.output-processes > ul li.output-entry ul.output-entry-files > li > span.icon {
+  background-image: url(../jqueryui/images/ui-icons_d1d1d1_256x240.png);
+  background-position: -32px -96px;
 }
 ul.dataset-entries li.dataset div.right-pane {
   float: left;

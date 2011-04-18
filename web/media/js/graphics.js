@@ -1,12 +1,12 @@
 (function() {
-  var __slice = Array.prototype.slice, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  var __slice = Array.prototype.slice, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
     ctor.prototype = parent.prototype;
     child.prototype = new ctor;
     child.__super__ = parent.prototype;
     return child;
-  };
+  }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   (function($) {
     var GraphPatch, Grapher, ScalogramGrapher, ScalogramGroupGrapher, ScalogramSubGrapher, SubGraphPatch, SubWaveGrapher, WaveGrapher, WaveGroupGrapher;
     if (!('min' in Math)) {
@@ -77,34 +77,18 @@
         return this.left() < this.grapher.wW() && this.top() < this.grapher.wH();
       };
       GraphPatch.prototype.draw = function() {
-        var image, url, _h, _ref, _w;
+        var url, _h, _ref, _w;
         this.element = $("<div class=\"graphic-patch\" />");
         _ref = [this.height(), this.width()], _h = _ref[0], _w = _ref[1];
         url = "/g/" + this.grapher.oid + "/" + _w + "x" + _h + ".png?" + ($.param(this.params()));
-        this.element.appendTo(this.wall).css({
+        return this.element.appendTo(this.wall).css({
           position: 'absolute',
           left: "" + (this.left()) + "px",
           top: "" + (this.top()) + "px",
           width: "" + _w + "px",
           height: "" + _h + "px",
-          opacity: 0.0
+          'background-image': "url(" + url + ")"
         });
-        image = $("<img src=\"" + url + "\" />").css({
-          opacity: 0,
-          position: 'absolute',
-          left: 0,
-          top: 0
-        }).appendTo('body');
-        return image.load(__bind(function() {
-          return _.defer(__bind(function() {
-            this.element.css({
-              'background-image': "url(" + url + ")"
-            }).animate({
-              opacity: 1
-            }, 500);
-            return image.remove();
-          }, this));
-        }, this));
       };
       GraphPatch.prototype.params = function() {
         var scales, _x, _y;

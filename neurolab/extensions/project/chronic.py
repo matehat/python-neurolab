@@ -7,7 +7,7 @@ from neurolab.formats.matlab import MatlabOutputTemplate
 
 class ConcatenatedWaves(MatlabOutputTemplate):
     slug = 'concatenated-waves'
-    title = 'Concatenated Waves'
+    title = 'Concatenate Waves to .mat Format'
     component_types = ('wave-group',)
     
     class CriteriaForm(forms.Form):
@@ -47,6 +47,7 @@ class ConcatenatedWaves(MatlabOutputTemplate):
         chunk = config.CHUNKSIZES['fft']
         array = np.zeros((num, T))
         j = 0
+        
         for cmp, indices in components:
             sampl = cmp.sampling_rate
             _tb = [v*sampl for v in tb]
@@ -63,11 +64,12 @@ class ConcatenatedWaves(MatlabOutputTemplate):
                             break
                         
                         _l = array.shape[1] if _inc < 0 else _k + _inc
-                        array[j, _k:_l] = resample(carray[i, k:k+inc], _inc)
+                        array[j, _k:_l] = resample(carray[i, k:k+inc], int(_inc))
                         
                         k += chunk
                     j += 1
         
+        print "Finished getting output variables"
         return {'wavedata': array}
     
     def jobs(self, entry):
