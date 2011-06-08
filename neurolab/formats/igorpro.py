@@ -9,9 +9,9 @@
 # AUTHORS:
 # Matlab version: R. Naud August 2008 (http://lcn.epfl.ch/~naud/Home.html)
 # Python port: A. Seeholzer October 2008
-#
+# 
 # VERSION: 0.1
-#
+# 
 # COMMENTS:
 # Only tested for version 2 igor files for now, testing for 3 and 5 remains to be done.
 # More header data could be passed back if wished. For significace of ignored bytes see
@@ -156,8 +156,7 @@ def read(filename):
         
         wdata = numpy.fromfile(f,dtype)
     else:
-        assert False, "Fileversion is of type '%i', not supported" % dtype
-        wdata = []
-        
+        raise NotImplementedError("IBW file not compatible")
+    
     f.close()
-    return wdata
+    return wdata[:-5]

@@ -25,6 +25,8 @@ TEMPLATES = {
 MONGO_PORT = 8001
 MONGO_DB = 'neurolab'
 
+NEUROLAB_DB_PATH = '/Volumes/Massive HD/Development/var/neurolab'
+
 QUEUES = {
     'output': {
         'workers': 1,

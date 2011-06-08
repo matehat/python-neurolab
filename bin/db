@@ -21,6 +21,8 @@ except ImportError:
 
 if 'NEUROLAB_DB_PATH' in os.environ:
     dbdir = os.environ['NEUROLAB_DB_PATH']
+elif hasattr(config, 'NEUROLAB_DB_PATH'):
+    dbdir = config.NEUROLAB_DB_PATH
 else:
     dbdir = join(basedir, 'db')
 
