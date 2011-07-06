@@ -71,7 +71,7 @@ class MatlabConcatenatedWaves(MatlabOutputTemplate):
                     j += 1
         
         print "Finished getting output variables"
-        return array
+        return array.transpose()
     
     def jobs(self, entry):
         cur = 0
@@ -149,7 +149,7 @@ class LabchartTextConcatenatedWaves(LabChartTextOutputTemplate):
                     j += 1
         
         print "Finished getting output variables"
-        return array
+        return array.transpose()
     
     def jobs(self, entry):
         cur = 0
