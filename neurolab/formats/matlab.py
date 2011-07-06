@@ -7,5 +7,5 @@ class MatlabOutputTemplate(FileOutputTemplate):
     
     def write_file(self, entry, jobdata, fname):
         from scipy.io import savemat
-        savemat(fname, self.get_variables(entry, jobdata))
+        savemat(fname, {'wavedata': self.get_array(entry, jobdata)})
     

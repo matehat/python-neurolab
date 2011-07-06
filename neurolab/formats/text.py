@@ -7,5 +7,11 @@ class TextOutputTemplate(FileOutputTemplate):
     
     def write_file(self, entry, jobdata, fname):
         import numpy
-        numpy.savetxt(fname, self.get_variables(entry, jobdata))
+        numpy.savetxt(fname, self.get_array(entry, jobdata))
+    
+
+class LabChartTextOutputTemplate(TextOutputTemplate):
+    def write_file(self, entry, jobdata, fname):
+        import numpy 
+        numpy.savetxt(fname, self.get_array(entry, jobdata), fmt="   %.16e", delimiter="\t", newline="\t\n")
     

@@ -4,7 +4,7 @@ import config
 from neurolab.db import *
 from neurolab.output import *
 from neurolab.formats.matlab import MatlabOutputTemplate
-from neurolab.formats.text import TextOutputTemplate
+from neurolab.formats.text import LabChartTextOutputTemplate
 
 class MatlabConcatenatedWaves(MatlabOutputTemplate):
     slug = 'concatenated-waves-matlab'
@@ -24,7 +24,7 @@ class MatlabConcatenatedWaves(MatlabOutputTemplate):
     def make_filetitle(self, entry, jobdata):
         return "%s_%.2f-%.2f" % (self.name, jobdata['start'], jobdata['stop'])
     
-    def get_variables(self, entry, jobdata):
+    def get_array(self, entry, jobdata):
         import numpy as np
         from scipy.signal import resample
         
@@ -71,7 +71,7 @@ class MatlabConcatenatedWaves(MatlabOutputTemplate):
                     j += 1
         
         print "Finished getting output variables"
-        return {'wavedata': array}
+        return array
     
     def jobs(self, entry):
         cur = 0
@@ -84,9 +84,9 @@ class MatlabConcatenatedWaves(MatlabOutputTemplate):
             cur += step
     
 
-class TextConcatenatedWaves(TextOutputTemplate):
-    slug = 'concatenated-waves-txt'
-    title = 'Concatenate Waves to .txt Format'
+class LabchartTextConcatenatedWaves(LabChartTextOutputTemplate):
+    slug = 'labchart-concatenated-waves-txt'
+    title = 'Concatenate Waves to Labchart Text Format'
     component_types = ('wave-group',)
     
     class CriteriaForm(forms.Form):
@@ -102,7 +102,7 @@ class TextConcatenatedWaves(TextOutputTemplate):
     def make_filetitle(self, entry, jobdata):
         return "%s_%.2f-%.2f" % (self.name, jobdata['start'], jobdata['stop'])
     
-    def get_variables(self, entry, jobdata):
+    def get_array(self, entry, jobdata):
         import numpy as np
         from scipy.signal import resample
         
@@ -163,4 +163,4 @@ class TextConcatenatedWaves(TextOutputTemplate):
     
 
 
-OutputTemplate.templates.extend(MatlabConcatenatedWaves, TextConcatenatedWaves)
+OutputTemplate.templates.extend(MatlabConcatenatedWaves, LabchartTextConcatenatedWaves)
