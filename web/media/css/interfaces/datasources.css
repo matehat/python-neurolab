@@ -106,7 +106,10 @@ ul.datasource-entries li.datasource div.files div.file-details div.file h4 {
   margin-bottom: 0;
   padding-bottom: 5px;
 }
-ul.datasource-entries li.datasource div.files div.file-details div.file .file-controls, ul.datasource-entries li.datasource div.files div.file-details div.file .empty, ul.datasource-entries li.datasource div.files div.file-details div.file .deferred {
+ul.datasource-entries li.datasource div.files div.file-details div.file .file-controls,
+ul.datasource-entries li.datasource div.files div.file-details div.file .empty,
+ul.datasource-entries li.datasource div.files div.file-details div.file .deferred,
+ul.datasource-entries li.datasource div.files div.file-details div.file .not_found {
   margin-top: 1em;
 }
 ul.datasource-entries li.datasource div.files div.file-details div.file dl.body.details {

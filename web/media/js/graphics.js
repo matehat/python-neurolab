@@ -103,10 +103,10 @@
       return GraphPatch;
     })();
     SubGraphPatch = (function() {
+      __extends(SubGraphPatch, GraphPatch);
       function SubGraphPatch() {
         SubGraphPatch.__super__.constructor.apply(this, arguments);
       }
-      __extends(SubGraphPatch, GraphPatch);
       SubGraphPatch.prototype.params = function() {
         return _.extend(SubGraphPatch.__super__.params.call(this), {
           index: this.grapher.data('index')
@@ -154,22 +154,22 @@
         res = [];
         _ref3 = r1 = (function() {
           _results2 = [];
-          for (var _j = _ref = (_m = Math.floor(x / this.pW)), _ref2 = _m + Math.ceil(this.jW() / this.pW); _ref <= _ref2 ? _j <= _ref2 : _j >= _ref2; _ref <= _ref2 ? _j += 1 : _j -= 1){ _results2.push(_j); }
+          for (var _j = _ref = (_m = Math.floor(x / this.pW)), _ref2 = _m + Math.ceil(this.jW() / this.pW); _ref <= _ref2 ? _j <= _ref2 : _j >= _ref2; _ref <= _ref2 ? _j++ : _j--){ _results2.push(_j); }
           return _results2;
-        }).call(this);
+        }).apply(this, arguments);
         _results = [];
         for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
           i = _ref3[_i];
           _results.push((function() {
-            var _i, _j, _len, _ref, _ref2, _ref3, _results, _results2;
-            _ref3 = r2 = (function() {
-              _results2 = [];
-              for (var _j = _ref = (_n = Math.floor(y / this.pH)), _ref2 = _n + Math.ceil(this.jH() / this.pH); _ref <= _ref2 ? _j <= _ref2 : _j >= _ref2; _ref <= _ref2 ? _j += 1 : _j -= 1){ _results2.push(_j); }
-              return _results2;
-            }).call(this);
-            _results = [];
-            for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-              j = _ref3[_i];
+            var _k, _l, _len2, _ref4, _ref5, _ref6, _results3, _results4;
+            _ref6 = r2 = (function() {
+              _results4 = [];
+              for (var _l = _ref4 = (_n = Math.floor(y / this.pH)), _ref5 = _n + Math.ceil(this.jH() / this.pH); _ref4 <= _ref5 ? _l <= _ref5 : _l >= _ref5; _ref4 <= _ref5 ? _l++ : _l--){ _results4.push(_l); }
+              return _results4;
+            }).apply(this, arguments);
+            _results3 = [];
+            for (_k = 0, _len2 = _ref6.length; _k < _len2; _k++) {
+              j = _ref6[_k];
               if (!(this.patches["" + i + "," + j] != null)) {
                 patch = new this.constructor.Patch(this, i, j);
                 if (!patch.valid()) {
@@ -178,7 +178,7 @@
                 (this.patches["" + i + "," + j] = patch).draw();
               }
             }
-            return _results;
+            return _results3;
           }).call(this));
         }
         return _results;
@@ -238,10 +238,10 @@
       return WaveGrapher;
     })();
     SubWaveGrapher = (function() {
+      __extends(SubWaveGrapher, WaveGrapher);
       function SubWaveGrapher() {
         SubWaveGrapher.__super__.constructor.apply(this, arguments);
       }
-      __extends(SubWaveGrapher, WaveGrapher);
       SubWaveGrapher.prototype.prepare = function() {
         SubWaveGrapher.__super__.prepare.call(this);
         return this.jq.css('position', 'absolute');
@@ -262,14 +262,14 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             prop = _ref[_i];
             _results.push((function() {
-              var _i, _len, _ref, _results;
-              _ref = _.words(this.data(prop), ',');
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                num = _ref[_i];
-                _results.push(parseFloat(num));
+              var _j, _len2, _ref2, _results2;
+              _ref2 = _.words(this.data(prop), ',');
+              _results2 = [];
+              for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                num = _ref2[_j];
+                _results2.push(parseFloat(num));
               }
-              return _results;
+              return _results2;
             }).call(this));
           }
           return _results;
@@ -287,7 +287,7 @@
           position: 'relative'
         });
         _results = [];
-        for (i = 0, _ref = this.count; (0 <= _ref ? i < _ref : i > _ref); (0 <= _ref ? i += 1 : i -= 1)) {
+        for (i = 0, _ref = this.count; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
           _results.push(__bind(function(i) {
             var g;
             g = $('<div class=\"graphic-subgraph\" />').appendTo(this.jq);
@@ -312,16 +312,16 @@
             g = this.graphers[i] = new SubWaveGrapher(g);
             g.prepare();
             return g.jq.bind('walldrag', __bind(function(event, drag) {
-              var j, _ref, _results;
-              _results = [];
-              for (j = 0, _ref = this.count; (0 <= _ref ? j < _ref : j > _ref); (0 <= _ref ? j += 1 : j -= 1)) {
+              var j, _ref2, _results2;
+              _results2 = [];
+              for (j = 0, _ref2 = this.count; 0 <= _ref2 ? j < _ref2 : j > _ref2; 0 <= _ref2 ? j++ : j--) {
                 if (i === j) {
                   continue;
                 }
                 this.graphers[j].wall.css('left', "" + drag.left + "px");
-                _results.push(this.graphers[j].draw());
+                _results2.push(this.graphers[j].draw());
               }
-              return _results;
+              return _results2;
             }, this));
           }, this)(i));
         }
@@ -348,10 +348,10 @@
       return ScalogramGrapher;
     })();
     ScalogramSubGrapher = (function() {
+      __extends(ScalogramSubGrapher, ScalogramGrapher);
       function ScalogramSubGrapher() {
         ScalogramSubGrapher.__super__.constructor.apply(this, arguments);
       }
-      __extends(ScalogramSubGrapher, ScalogramGrapher);
       ScalogramSubGrapher.prototype.prepare = function() {
         ScalogramSubGrapher.__super__.prepare.call(this);
         return this.jq.css('position', 'absolute');
@@ -373,14 +373,14 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             prop = _ref[_i];
             _results.push((function() {
-              var _i, _len, _ref, _results;
-              _ref = _.words(this.data(prop), ',');
-              _results = [];
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                num = _ref[_i];
-                _results.push(parseFloat(num));
+              var _j, _len2, _ref2, _results2;
+              _ref2 = _.words(this.data(prop), ',');
+              _results2 = [];
+              for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+                num = _ref2[_j];
+                _results2.push(parseFloat(num));
               }
-              return _results;
+              return _results2;
             }).call(this));
           }
           return _results;
@@ -399,7 +399,7 @@
         });
         console.log('Preparing', this.count);
         _results = [];
-        for (i = 0, _ref = this.count; (0 <= _ref ? i < _ref : i > _ref); (0 <= _ref ? i += 1 : i -= 1)) {
+        for (i = 0, _ref = this.count; 0 <= _ref ? i < _ref : i > _ref; 0 <= _ref ? i++ : i--) {
           _results.push(__bind(function(i) {
             var g;
             console.log(i);
@@ -428,16 +428,16 @@
             console.log(g, this.jq);
             g.prepare();
             return g.jq.bind('walldrag', __bind(function(event, drag) {
-              var j, _ref, _results;
-              _results = [];
-              for (j = 0, _ref = this.count; (0 <= _ref ? j < _ref : j > _ref); (0 <= _ref ? j += 1 : j -= 1)) {
+              var j, _ref2, _results2;
+              _results2 = [];
+              for (j = 0, _ref2 = this.count; 0 <= _ref2 ? j < _ref2 : j > _ref2; 0 <= _ref2 ? j++ : j--) {
                 if (i === j) {
                   continue;
                 }
                 this.graphers[j].wall.css('left', "" + drag.left + "px");
-                _results.push(this.graphers[j].draw());
+                _results2.push(this.graphers[j].draw());
               }
-              return _results;
+              return _results2;
             }, this));
           }, this)(i));
         }

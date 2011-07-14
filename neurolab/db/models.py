@@ -298,7 +298,9 @@ class Block(Document):
         starttime = self.starttime
         try:
             name = self.dataset.blockname.format(
-                day=starttime.day, month=starttime.month,
+                day=starttime.day, 
+                month=starttime.month,
+                date=starttime,
                 year=starttime.year, **self.metadata
             )
             return name

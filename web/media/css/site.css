@@ -140,14 +140,14 @@ div#content h2 {
 div#content a.create {
   margin-bottom: .5em;
 }
-div#content .empty, div#content .deferred {
+div#content .empty, div#content .deferred, div#content .not_found {
   background-color: white;
   border-radius: 5px;
   border: 2px dotted #eee;
   padding: 10px;
   color: #aaa;
 }
-div#content .empty.deferred, div#content .deferred.deferred {
+div#content .empty.deferred, div#content .deferred.deferred, div#content .not_found.deferred {
   text-align: center;
 }
 .ui-button-icon-only {

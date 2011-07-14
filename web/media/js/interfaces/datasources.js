@@ -146,10 +146,19 @@
         });
       };
       def = this.find('div.file.deferred');
-      return $.get("/datasources/" + dsid + "/files/" + fid + "/structure/", {}, function(data) {
-        var structure;
-        def.replaceWith((structure = $(data)));
-        return bindFileStructure.call(structure);
+      return $.ajax({
+        url: "/datasources/" + dsid + "/files/" + fid + "/structure/",
+        data: {},
+        success: function(data) {
+          var structure;
+          def.replaceWith((structure = $(data)));
+          return bindFileStructure.call(structure);
+        },
+        statusCode: {
+          404: function() {
+            return def.replaceWith("<div class=\"not_found\">The source file do not seem to be available</div>");
+          }
+        }
       });
     };
     bindDatasource = function() {

@@ -118,13 +118,27 @@ def sourcefile(request, ds_id, file_id):
 
 def sourcefile_structure(request, ds_id, file_id):
     from neurolab.db.models import SourceFile
+    import json
+    
     try:
         file = SourceFile.objects.get(id=file_id, datasource=ds_id)
     except SourceFile.DoesNotExist, KeyError:
         raise Http404
+    
+    resp = HttpResponse(json.dumps({'success': False}), mimetype="application/json")
+    resp.status_code = 404
+    return resp
+    
+    try:
+        file_infos = file.infos
+    except IOError:
+        resp = HttpResponse(json.dumps({'success': False}), mimetype="application/json")
+        resp.status_code = 404
+        return resp
+    
     return render_to_response('partials/datasources/sourcefile/structure.html', {
         'file': file, 
-        'infos': file.infos,
+        'infos': file_infos,
         'datasets': file.datasets()
     })
 

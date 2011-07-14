@@ -124,10 +124,14 @@ jQuery ($) ->
         
     
     def = @find 'div.file.deferred'
-    $.get "/datasources/#{dsid}/files/#{fid}/structure/", {},
-    (data) ->
-      def.replaceWith (structure = $ data)
-      bindFileStructure.call structure
+    $.ajax 
+      url: "/datasources/#{dsid}/files/#{fid}/structure/"
+      data: {}
+      success: (data) ->
+        def.replaceWith (structure = $ data)
+        bindFileStructure.call structure
+      statusCode: 
+        404: -> def.replaceWith """<div class="not_found">The source file do not seem to be available</div>"""
     
   
   bindDatasource = ->
