@@ -125,10 +125,6 @@ def sourcefile_structure(request, ds_id, file_id):
     except SourceFile.DoesNotExist, KeyError:
         raise Http404
     
-    resp = HttpResponse(json.dumps({'success': False}), mimetype="application/json")
-    resp.status_code = 404
-    return resp
-    
     try:
         file_infos = file.infos
     except IOError:
