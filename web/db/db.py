@@ -274,7 +274,7 @@ def block_output_discard(request, ds_id, block_id, op_id):
     except (Dataset.DoesNotExist, Block.DoesNotExist, OutputTemplate.DoesNotExist):
         raise Http404
     
-    entry.delete(discard=False)
+    entry.delete(discard=True)
     return HttpResponse("")
 
 
@@ -351,7 +351,7 @@ def component_process(request, ds_id, block_id, cmp_id):
                     task_slug=task.slug, criteria=criteria)
                 component.template.update()
             else:
-                if task.objects(argument.component, name=request.POST['name']).count() > 0:
+                if Component.objects(parent=component, name=request.POST['name']).count() > 0:
                     raise Http404
                 
                 task.create(name=request.POST['name'], argument=component, criteria=criteria)
