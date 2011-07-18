@@ -324,7 +324,6 @@ jQuery ($) ->
                   $.get url, {'task': $(@).val()}, (data) ->
                     form_body.empty().append data
                     form_body.find(':input').uniform().end()
-                    proc_form.find('.submit').removeAttr('disabled')
                     $.uniform.update()
                 .end().find('.submit').click (e) ->
                   e.preventDefault()
