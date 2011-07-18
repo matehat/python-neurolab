@@ -84,3 +84,6 @@ INSTALLED_APPS = (
     'web',
     'gunicorn',
 )
+
+import matplotlib
+matplotlib.use('Agg')
