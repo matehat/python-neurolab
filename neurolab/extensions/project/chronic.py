@@ -60,8 +60,13 @@ class ConcatenatedWaves(object):
                             break
                         
                         _l = array.shape[1] if _inc < 0 else _k + _inc
-                        array[j, _k:_l] = A = resample(carray[i, k:k+inc], int(_inc))
-                        print A[0], A[-1]
+                        
+                        try:
+                            array[j, _k:_l] = A = resample(carray[i, k:k+inc], int(_l-_k))
+                        except ValueError:
+                            if _inc == 0:
+                                break
+                        
                         k += chunk
                         _k = _l
                     j += 1
