@@ -87,7 +87,10 @@ class FileOutputTemplate(OutputTemplate):
         block = entry.block
         if discard:
             for fname in entry.files:
-                block.dataset.unlink(block.componentpath(fname))
+                try:
+                    block.dataset.unlink(block.componentpath(fname))
+                except OSError:
+                    continue
     
     def jobs(self, entry):
         raise NotImplementedError
@@ -121,5 +124,6 @@ class OutputTask(Task):
     def handle_job(self, job):
         self.entry.make(job.data)
     
+
 
 OutputTemplate.templates = ObjectList(OutputTemplate)
