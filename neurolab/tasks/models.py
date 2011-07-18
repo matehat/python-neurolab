@@ -18,11 +18,11 @@ class Job(Document):
     
     def handle_error(self, error, tb=""):
         self.ready = False        
-        msg = """%s\nTraceback:\n%s""" % (", ".join(error.args)
+        msg = """%s\nTraceback:\n%s""" % (", ".join(error.args))
         self.events.append(JobEvent.objects.create(
             occured=datetime.now(),
             message=msg, tb)
-        ))
+        )
         print msg
         
         self.inprogress = False
